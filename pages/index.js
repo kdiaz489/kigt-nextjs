@@ -1,65 +1,80 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import Divider from '@material-ui/core/Divider';
+import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
+// import useLogin from '../hooks/useLogin';
+import { useRouter } from 'next/router';
+import LoginForm from '../components/LoginForm';
+import SocialLogin from '../components/SocialLogin';
 
-export default function Home() {
+const useStyles = makeStyles((theme) => ({
+  root: {
+    height: '100vh',
+  },
+  paper: {
+    margin: theme.spacing(8, 4, 2, 4),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  image: {
+    backgroundImage: `url('img/Home_Garage.jpg')`,
+    backgroundRepeat: 'no-repeat',
+    backgroundColor:
+      theme.palette.type === 'light'
+        ? theme.palette.grey[50]
+        : theme.palette.grey[900],
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+  },
+}));
+
+const Copyright = () => {
+  const classes = useStyles();
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <Typography variant='body2' color='secondary' align='center'>
+      {'Copyright © '}
+      KIGT {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+};
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+const Login = (props) => {
+  const classes = useStyles();
+  const router = useRouter();
+  // const { isAuthenticated } = useLogin();
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     router.push('/dashboard');
+  //   }
+  // }, [isAuthenticated]);
 
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
+  return (
+    <div>
+      <Grid container component='main' className={classes.root}>
+        <Grid item xs={12} sm={8} md={5} component={Paper} square>
+          <div className={classes.paper}>
+            <LoginForm />
 
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
+            <div style={{ width: '100%', marginTop: '16px' }}>
+              <Divider variant='fullWidth' />
+            </div>
 
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
+            <SocialLogin />
 
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
+            <Box mt={5}>
+              <Copyright />
+            </Box>
+          </div>
+        </Grid>
+        <Grid item xs={false} sm={4} md={7} className={classes.image} />
+      </Grid>
     </div>
-  )
-}
+  );
+};
+
+export default Login;
