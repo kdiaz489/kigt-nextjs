@@ -1,22 +1,15 @@
 import firebaseClient from 'firebase/app';
 import 'firebase/auth';
+console.log(process.env.NEXT_PUBLIC_FIREBASE_CLIENT_APIKEY);
 
-/*
-Copy/paste your *client-side* Firebase credentials below. 
-To get these, go to the Firebase Console > open your project > Gear Icon >
-Project Settings > General > Your apps. If you haven't created a web app
-already, click the "</>" icon, name your app, and copy/paste the snippet.
-Otherwise, go to Firebase SDK Snippet > click the "Config" radio button >
-copy/paste.
-*/
 const CLIENT_CONFIG = {
-  apiKey: 'AIzaSyDvHUOaaxeOwJDW3XS3yjqmjwDoXYCxKjQ',
-  authDomain: 'kigtinterface.firebaseapp.com',
-  databaseURL: 'https://kigtinterface.firebaseio.com',
-  projectId: 'kigtinterface',
-  storageBucket: 'kigtinterface.appspot.com',
-  messagingSenderId: '663507140562',
-  appId: '1:663507140562:web:d709b10d93ffddc263d20b',
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_CLIENT_APIKEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_CLIENT_AUTHDOMAIN,
+  databaseURL: process.env.NEXT_PUBLIC_FIREBASE_CLIENT_DATABASEURL,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_CLIENT_PROJECTID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_CLIENT_STORAGEBUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_CLIENT_MESSAGINGSENDERID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_CLIENT_APPID,
 };
 
 if (typeof window !== 'undefined' && !firebaseClient.apps.length) {

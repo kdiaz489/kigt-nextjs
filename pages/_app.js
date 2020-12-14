@@ -95,9 +95,9 @@ export default class MyApp extends App {
           >
             <Container disableGutters maxWidth={false}>
               <Box marginTop={0}>
-                {/* <AuthProvider> */}
-                <Component {...pageProps} />
-                {/* </AuthProvider> */}
+                <AuthProvider>
+                  <Component {...pageProps} />
+                </AuthProvider>
               </Box>
             </Container>
           </SWRConfig>

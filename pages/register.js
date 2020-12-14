@@ -1,9 +1,7 @@
-import { useEffect } from 'react';
 import { Grid, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import RegisterForm from '../components/RegisterForm';
 import { useRouter } from 'next/router';
-// import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
   root: {

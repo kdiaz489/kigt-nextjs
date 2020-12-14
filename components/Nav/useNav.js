@@ -1,8 +1,6 @@
 import React from 'react';
-// import { logout } from '../../redux/auth/authSlice';
 import { Drawer, List, ListItem, ListItemText } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
-import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import Link from '@material-ui/core/Link';
 import Hidden from '@material-ui/core/Hidden';

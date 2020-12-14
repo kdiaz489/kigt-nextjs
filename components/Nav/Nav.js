@@ -1,10 +1,8 @@
-import React from 'react';
 import {
   Drawer,
   List,
   ListItem,
   ListItemText,
-  Avatar,
   Hidden,
   CssBaseline,
   AppBar,
@@ -16,11 +14,7 @@ import {
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import Link from 'next/link';
-import { useDispatch, useSelector } from 'react-redux';
-// import { setOpen } from '../../redux/drawer/drawerSlice';
-// import { logout } from '../../redux/auth/authSlice';
 import { useRouter } from 'next/router';
-// import { realTimeInterfaceApp } from '../../firebase';
 import { firebaseClient } from '../../firebaseClient';
 const drawerWidth = 240;
 
@@ -260,4 +254,4 @@ const Nav = (props) => {
   );
 };
 
-export default React.memo(Nav);
+export default Nav;

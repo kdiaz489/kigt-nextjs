@@ -1,22 +1,8 @@
 import React, { useEffect, useState } from 'react';
 // import whyDidYouRender from '@welldone-software/why-did-you-render';
-
-import Chart1 from '../components/Chart1';
-import Chart2 from '../components/Chart2';
 import NavWrapper from '../components/NavWrapper';
-import DetailsTable from '../components/DetailsTable';
-import StationSelect from '../components/StationSelect';
-
 import { makeStyles, Grid } from '@material-ui/core';
-
-import ToggleButton from '@material-ui/lab/ToggleButton';
 import Typography from '@material-ui/core/Typography';
-import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-import ThrottleGraph from '../components/ThrottleGraph';
-
-// import useDashboard from '../hooks/useDashboard';
-import Skeleton from '@material-ui/lab/Skeleton';
-import Router from 'next/router';
 import nookies from 'nookies';
 import { firebaseAdmin } from '../firebaseAdmin';
 import axios from 'axios';
