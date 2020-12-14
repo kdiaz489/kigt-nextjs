@@ -16,6 +16,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { firebaseClient } from '../../firebaseClient';
+import Button from '@material-ui/core/Button';
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -155,7 +156,7 @@ const Nav = (props) => {
             </ListItem>
           </Link>
 
-          <Link underline='none' href='/throttle'>
+          {/* <Link underline='none' href='/throttle'>
             <ListItem
               button
               className={classes.listItem}
@@ -167,9 +168,9 @@ const Nav = (props) => {
                 classes={{ primary: classes.listItemText }}
               />
             </ListItem>
-          </Link>
+          </Link> */}
 
-          <Link underline='none' href='/support'>
+          {/* <Link underline='none' href='/support'>
             <ListItem
               button
               className={classes.listItem}
@@ -181,7 +182,7 @@ const Nav = (props) => {
                 classes={{ primary: classes.listItemText }}
               />
             </ListItem>
-          </Link>
+          </Link> */}
 
           <ListItem
             button
@@ -219,6 +220,7 @@ const Nav = (props) => {
           >
             <MenuIcon />
           </IconButton>
+          <Button style={{ color: 'white' }}>Test</Button>
         </Toolbar>
       </AppBar>
       <nav className={classes.drawer}>

@@ -1,6 +1,5 @@
 import firebaseClient from 'firebase/app';
 import 'firebase/auth';
-console.log(process.env.NEXT_PUBLIC_FIREBASE_CLIENT_APIKEY);
 
 const CLIENT_CONFIG = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_CLIENT_APIKEY,
