@@ -220,7 +220,6 @@ const Nav = (props) => {
           >
             <MenuIcon />
           </IconButton>
-          <Button style={{ color: 'white' }}>Test</Button>
         </Toolbar>
       </AppBar>
       <nav className={classes.drawer}>
