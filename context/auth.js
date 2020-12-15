@@ -19,10 +19,14 @@ export function AuthProvider({ children }) {
         return;
       }
       console.log('Updating Token');
-      const token = await user.getIdToken();
-      setUser(user);
-      nookies.destroy(null, 'token');
-      nookies.set(null, 'token', token, {});
+      try {
+        const token = await user.getIdToken();
+        setUser(user);
+        nookies.destroy(null, 'token');
+        nookies.set(null, 'token', token, {});
+      } catch (error) {
+        console.log(error);
+      }
     });
   }, []);
 
