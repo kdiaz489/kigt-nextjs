@@ -16,7 +16,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { firebaseClient } from '../../firebaseClient';
-
+import { useAuth } from '../../context/auth';
 import Logo from '../../public/img/KIGT_Logo.svg';
 const drawerWidth = 240;
 
@@ -104,7 +104,9 @@ const Nav = (props) => {
   // const { open } = useSelector((state) => state.drawer);
   const theme = useTheme();
   const pathname = router.pathname;
-  const user = props.user;
+  // const user = props.user;
+
+  const { user } = useAuth();
 
   const { window } = props;
   const container =
@@ -128,7 +130,11 @@ const Nav = (props) => {
           <Divider />
           <ListItem className={classes.userName}>
             <ListItemText
-              primary={user.displayName !== null ? user.displayName : 'User'}
+              primary={
+                user !== null && user.displayName !== null
+                  ? user.displayName
+                  : 'User'
+              }
               classes={{ primary: classes.userName }}
             />
           </ListItem>
