@@ -4,10 +4,11 @@ import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-// import useLogin from '../../hooks/useLogin';
+import { firebaseClient, googleProvider } from '../../firebaseClient';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { faMicrosoft } from '@fortawesome/free-brands-svg-icons';
+import { useRouter } from 'next/router';
 const useStyles = makeStyles((theme) => ({
   googleLogin: {
     backgroundColor: '#e14928',
@@ -29,6 +30,15 @@ const useStyles = makeStyles((theme) => ({
 
 const SocialLogin = () => {
   const classes = useStyles();
+  const router = useRouter();
+  const googleLogin = async () => {
+    try {
+      await firebaseClient.auth().signInWithPopup(googleProvider);
+      router.push('/dashboard');
+    } catch (error) {
+      console.log('GOOGLE LOGIN ERROR', error);
+    }
+  };
   // const { loginGoogleSubmit, loginMicrosoftSubmit } = useLogin();
   return (
     <Box textAlign='center' mt={3}>
@@ -36,10 +46,7 @@ const SocialLogin = () => {
       <Box mt={3}>
         <Grid container justify='center' spacing={4}>
           <Grid item xs>
-            <Button
-              className={classes.googleLogin}
-              onClick={() => console.log('login')}
-            >
+            <Button className={classes.googleLogin} onClick={googleLogin}>
               <FontAwesomeIcon icon={faGoogle} />
             </Button>
           </Grid>

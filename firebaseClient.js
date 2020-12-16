@@ -19,4 +19,6 @@ if (typeof window !== 'undefined' && !firebaseClient.apps.length) {
   window.firebase = firebaseClient;
 }
 
-export { firebaseClient };
+let googleProvider = new firebaseClient.auth.GoogleAuthProvider();
+
+export { firebaseClient, googleProvider };
