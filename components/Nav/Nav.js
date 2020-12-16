@@ -128,7 +128,7 @@ const Nav = (props) => {
           <Divider />
           <ListItem className={classes.userName}>
             <ListItemText
-              primary={!!user.displayName ? user.displayName : 'User'}
+              primary={user.displayName !== null ? user.displayName : 'User'}
               classes={{ primary: classes.userName }}
             />
           </ListItem>
