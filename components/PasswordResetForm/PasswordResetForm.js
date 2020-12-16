@@ -6,13 +6,10 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import FormGroup from '@material-ui/core/FormGroup';
 import Link from 'next/link';
-// import useLogin from '../../hooks/useLogin';
-
 import { useRouter } from 'next/router';
 import { Formik, Field, Form } from 'formik';
 import { object, string } from 'yup';
 import { firebaseClient } from '../../firebaseClient';
-
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '100vh',
@@ -76,120 +73,64 @@ const useStyles = makeStyles((theme) => ({
     textTransform: 'none',
   },
 }));
-
 const initialValues = {
   email: '',
-  password: '',
 };
-
-const LoginForm = (props) => {
+const PasswordResetForm = () => {
   const classes = useStyles();
-  const router = useRouter();
-
-  // const { isAuthenticated, emailpassLogin } = useLogin();
-
-  // useEffect(() => {
-  //   if (isAuthenticated) {
-  //     router.push('/dashboard');
-  //   }
-
-  //   // eslint-disable-next-line
-  // }, [isAuthenticated, props.history]);
   return (
     <>
-      <Typography component='h1' variant='h5'>
-        Sign in to Your Account
-      </Typography>
+      <Typography variant='h5'>Password Reset</Typography>
       <Formik
         initialValues={initialValues}
         validationSchema={object({
           email: string().email().required(),
-          password: string().required(),
         })}
         onSubmit={async (values, formikHelpers) => {
-          /* must return promise */
           try {
-            await firebaseClient
+            let res = await firebaseClient
               .auth()
-              .signInWithEmailAndPassword(values.email, values.password);
-            router.push('/dashboard');
+              .sendPasswordResetEmail(values.email);
           } catch (error) {
-            console.log('Error', error);
+            console.log('ERROR', error);
           }
         }}
       >
-        {({ values, errors, touched, isSubmitting, isValidating }) => (
+        {({ values, isSubmitting, isValidating, errors, touched }) => (
           <Form className={classes.form}>
             <Box mb={2}>
               <FormGroup>
                 <Field
                   name='email'
-                  as={TextField}
-                  label='Email'
                   variant='outlined'
+                  label='Email'
+                  as={TextField}
                   margin='dense'
                   fullWidth
                   helperText={
                     touched.email &&
                     Boolean(errors.email) &&
-                    'Email is required'
+                    'Password is required'
                   }
                   error={touched.email && Boolean(errors.email)}
                 />
               </FormGroup>
             </Box>
-            <Box mb={2}>
-              <FormGroup>
-                <Field
-                  name='password'
-                  as={TextField}
-                  label='Password'
-                  variant='outlined'
-                  margin='dense'
-                  fullWidth
-                  type='password'
-                  helperText={
-                    touched.password &&
-                    Boolean(errors.password) &&
-                    'Password is required'
-                  }
-                  error={touched.password && Boolean(errors.password)}
-                />
-              </FormGroup>
-            </Box>
             <Button
+              variant='contained'
+              color='primary'
               type='submit'
               fullWidth
-              variant='contained'
               className={classes.submit}
               disabled={isSubmitting || isValidating}
             >
-              Sign In
+              Reset
             </Button>
           </Form>
         )}
       </Formik>
-
-      <Grid container>
-        <Grid item xs>
-          <Button className={classes.lowerCaseButton}>
-            <Link href='/resetpassword'>
-              <a className={classes.link}>Forgot Password?</a>
-            </Link>
-          </Button>
-        </Grid>
-        <Grid item>
-          <Button className={classes.lowerCaseButton}>
-            <Link href='/register'>
-              <a className={classes.link}>
-                <Typography color='inherit'>Register</Typography>
-              </a>
-            </Link>
-          </Button>
-        </Grid>
-      </Grid>
     </>
   );
 };
 
-export default LoginForm;
+export default PasswordResetForm;

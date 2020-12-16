@@ -9,7 +9,9 @@ import axios from 'axios';
 import ChargerTable from '../components/ChargerTable';
 import useSWR from 'swr';
 import ChargerPanel from '../components/ChargerPanel';
-
+import Button from '@material-ui/core/Button';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import { useAuth } from '../context/auth';
 const drawerWidth = 240;
 // whyDidYouRender(React, {
 //   onlyLogs: true,
@@ -52,21 +54,33 @@ const useStyles = makeStyles((theme) => ({
     zIndex: theme.zIndex.drawer + 1,
     color: '#fff',
   },
+  button: {
+    color: theme.palette.secondary.light,
+  },
 }));
-const Dashboard = (props) => {
+const Dashboard = ({ chargers }) => {
   const classes = useStyles();
   const [currentCharger, setCurrentCharger] = useState(null);
+  const { user } = useAuth();
   const { data } = useSWR(
-    'http://localhost:5001/kigtinterface/us-central1/api/allChargers',
+    'https://us-central1-kigtinterface.cloudfunctions.net/api/allChargers',
     {
-      initialData: props.chargers,
+      initialData: chargers,
     },
   );
-  console.log(data);
 
   return (
     <>
-      <NavWrapper>
+      <NavWrapper user={user}>
+        {!!currentCharger && (
+          <Button
+            classes={{ root: classes.button }}
+            startIcon={<ArrowBackIcon />}
+            onClick={() => setCurrentCharger(null)}
+          >
+            Back
+          </Button>
+        )}
         <Typography variant='h4' gutterBottom className={classes.normalFont}>
           Terminal Management
         </Typography>
@@ -78,7 +92,7 @@ const Dashboard = (props) => {
         ) : (
           <ChargerTable
             setCurrentCharger={setCurrentCharger}
-            data={props.chargers}
+            data={data.data}
           />
         )}
       </NavWrapper>
@@ -95,10 +109,11 @@ export const getServerSideProps = async (ctx) => {
 
     const { uid, email } = token;
     const chargers = await axios.get(
-      'http://localhost:5001/kigtinterface/us-central1/api/allChargers',
+      'https://us-central1-kigtinterface.cloudfunctions.net/api/allChargers',
     );
+    console.log(chargers);
 
-    return { props: { uid, email, chargers: chargers.data.data } };
+    return { props: { uid, email, chargers: chargers.data } };
   } catch (error) {
     console.log('ERROR = ', error);
     return {

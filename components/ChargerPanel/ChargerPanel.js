@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import ChargerDetails from '../ChargerDetails';
 import ChargerSettings from '../ChargerSettings';
-import Button from '@material-ui/core/Button';
+import TroubleShootForm from '../TroubleShootForm';
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -42,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
+    marginBottom: '10%',
   },
   tab: {
     color: 'white',
@@ -61,30 +62,30 @@ export default function ChargerPanel(props) {
   };
 
   return (
-    <div className={classes.root}>
-      <AppBar position='static'>
-        <Tabs
-          classes={{
-            root: classes.tabBackground,
-            indicator: classes.indicator,
-          }}
-          value={value}
-          onChange={handleChange}
-          aria-label='charger tabs'
-        >
-          <Tab className={classes.tab} label='Details' {...a11yProps(0)} />
-          <Tab className={classes.tab} label='Settings' {...a11yProps(1)} />
-        </Tabs>
-      </AppBar>
-      <TabPanel value={value} index={0}>
-        <ChargerDetails currentCharger={props.currentCharger} />
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        <ChargerSettings currentCharger={props.currentCharger} />
-      </TabPanel>
-      <Button color='secondary' onClick={() => props.setCurrentCharger(null)}>
-        Back
-      </Button>
-    </div>
+    <>
+      <div className={classes.root}>
+        <AppBar position='static'>
+          <Tabs
+            classes={{
+              root: classes.tabBackground,
+              indicator: classes.indicator,
+            }}
+            value={value}
+            onChange={handleChange}
+            aria-label='charger tabs'
+          >
+            <Tab className={classes.tab} label='Details' {...a11yProps(0)} />
+            <Tab className={classes.tab} label='Settings' {...a11yProps(1)} />
+          </Tabs>
+        </AppBar>
+        <TabPanel value={value} index={0}>
+          <ChargerDetails currentCharger={props.currentCharger} />
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <ChargerSettings currentCharger={props.currentCharger} />
+        </TabPanel>
+      </div>
+      <TroubleShootForm />
+    </>
   );
 }

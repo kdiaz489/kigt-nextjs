@@ -12,6 +12,7 @@ import '@fortawesome/fontawesome-svg-core/styles.css';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import { Router } from 'next/dist/client/router';
 import { AuthProvider } from '../context/auth';
+import { NavProvider } from '../context/nav';
 config.autoAddCss = false;
 NProgress.configure({
   showSpinner: false,
@@ -79,7 +80,7 @@ export default class MyApp extends App {
     return (
       <React.Fragment>
         <Head>
-          <title>B2B Dashboard</title>
+          <title>KIGT ChargeCloud</title>
           <meta
             name='viewport'
             content='minimum-scale=1, initial-scale=1, width=device-width'
@@ -96,7 +97,9 @@ export default class MyApp extends App {
             <Container disableGutters maxWidth={false}>
               <Box marginTop={0}>
                 <AuthProvider>
-                  <Component {...pageProps} />
+                  <NavProvider>
+                    <Component {...pageProps} />
+                  </NavProvider>
                 </AuthProvider>
               </Box>
             </Container>

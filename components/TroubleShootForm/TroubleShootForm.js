@@ -37,7 +37,7 @@ const TroubleShootForm = () => {
   return (
     <Box display='flex' justifyContent='center'>
       <Paper className={classes.paper}>
-        <Typography variant='h5'>Submit a Tech Support Ticket</Typography>
+        <Typography variant='h5'>Need Help? Submit a Support Ticket</Typography>
         <Typography></Typography>
         <Formik
           validationSchema={object({
@@ -127,7 +127,6 @@ const TroubleShootForm = () => {
               >
                 Submit Ticket
               </Button>
-              <pre>{JSON.stringify(values, null, 4)}</pre>
             </Form>
           )}
         </Formik>

@@ -16,7 +16,8 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { firebaseClient } from '../../firebaseClient';
-import Button from '@material-ui/core/Button';
+
+import Logo from '../../public/img/KIGT_Logo.svg';
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -103,6 +104,7 @@ const Nav = (props) => {
   // const { open } = useSelector((state) => state.drawer);
   const theme = useTheme();
   const pathname = router.pathname;
+  const user = props.user;
 
   const { window } = props;
   const container =
@@ -120,15 +122,17 @@ const Nav = (props) => {
     <div>
       <div className={classes.toolbar}>
         <List>
+          <ListItem alignItems='center' classes={{ root: classes.logo }}>
+            <Logo style={{ width: '50%', height: 'auto' }} />
+          </ListItem>
+          <Divider />
           <ListItem className={classes.userName}>
             <ListItemText
-              primary={'TEST'}
+              primary={!!user.displayName ? user.displayName : 'User'}
               classes={{ primary: classes.userName }}
             />
           </ListItem>
-
           <Divider />
-
           <Link href='/dashboard' underline='none' className={classes.link}>
             <ListItem
               selected={pathname === '/dashboard'}
@@ -220,7 +224,6 @@ const Nav = (props) => {
           >
             <MenuIcon />
           </IconButton>
-          <Button style={{ color: 'white' }}>Test</Button>
         </Toolbar>
       </AppBar>
       <nav className={classes.drawer}>
