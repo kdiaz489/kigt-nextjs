@@ -195,7 +195,7 @@ const Nav = (props) => {
             button
             onClick={async () => {
               await firebaseClient.auth().signOut();
-              window.location.href = '/';
+              router.push('/', undefined, { shallow: true });
             }}
             className={classes.listItem}
           >
