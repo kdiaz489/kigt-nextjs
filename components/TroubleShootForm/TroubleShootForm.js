@@ -1,16 +1,14 @@
 import { Formik, Field, Form } from 'formik';
-import {
-  TextField,
-  FormGroup,
-  Button,
-  Paper,
-  Typography,
-  Box,
-  makeStyles,
-  MenuItem,
-  InputLabel,
-  FormControl,
-} from '@material-ui/core';
+import TextField from '@material-ui/core/TextField';
+import FormGroup from '@material-ui/core/FormGroup';
+import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
+import { makeStyles } from '@material-ui/core/styles';
+import MenuItem from '@material-ui/core/MenuItem';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
 import { object, string } from 'yup';
 
 const initialValues = {

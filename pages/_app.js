@@ -14,6 +14,7 @@ import { Router } from 'next/dist/client/router';
 import { AuthProvider } from '../context/auth';
 import { NavProvider } from '../context/nav';
 config.autoAddCss = false;
+axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL;
 NProgress.configure({
   showSpinner: false,
   trickleRate: 0.02,

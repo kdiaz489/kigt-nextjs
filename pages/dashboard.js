@@ -62,12 +62,10 @@ const Dashboard = ({ chargers }) => {
   const classes = useStyles();
   const [currentCharger, setCurrentCharger] = useState(null);
   const { user } = useAuth();
-  const { data } = useSWR(
-    'https://us-central1-kigtinterface.cloudfunctions.net/api/allChargers',
-    {
-      initialData: chargers,
-    },
-  );
+  console.log('Inside client');
+  const { data } = useSWR('/dashboard/getAllChargers', {
+    initialData: chargers,
+  });
 
   return (
     <>
@@ -103,16 +101,11 @@ const Dashboard = ({ chargers }) => {
 export const getServerSideProps = async (ctx) => {
   try {
     const cookies = nookies.get(ctx);
-
     // console.log(JSON.stringify(cookies, null, 2));
     const token = await firebaseAdmin.auth().verifyIdToken(cookies.token);
-
     const { uid, email } = token;
-    const chargers = await axios.get(
-      'https://us-central1-kigtinterface.cloudfunctions.net/api/allChargers',
-    );
-    console.log(chargers);
-
+    console.log('Inside server props');
+    const chargers = await axios.get('/dashboard/getAllChargers');
     return { props: { uid, email, chargers: chargers.data } };
   } catch (error) {
     console.log('ERROR = ', error);

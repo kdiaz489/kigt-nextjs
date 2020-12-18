@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
-import {
-  makeStyles,
-  InputLabel,
-  MenuItem,
-  FormHelperText,
-  FormControl,
-  Select,
-} from '@material-ui/core';
+import { useState } from 'react';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -17,9 +15,9 @@ const useStyles = makeStyles((theme) => ({
 
 const ThrottleSelect = () => {
   const classes = useStyles();
-  const [age, setAge] = useState('');
-  const handleChange = (event) => {
-    setAge(event.target.value);
+  const [throttleVal, setThrottleVal] = useState('');
+  const handleChange = (e) => {
+    setThrottleVal(e.target.value);
   };
   return (
     <>
@@ -28,13 +26,13 @@ const ThrottleSelect = () => {
         size='small'
         className={classes.formControl}
       >
-        <InputLabel id='demo-simple-select-outlined-label'>Charger</InputLabel>
+        <InputLabel id='throttle-select'>Throttle Val</InputLabel>
         <Select
-          labelId='demo-simple-select-outlined-label'
-          id='demo-simple-select-outlined'
-          value={age}
+          labelId='throttle-select'
+          id='throttle-select-outlined'
+          value={throttleVal}
           onChange={handleChange}
-          label='Charger'
+          label='Throttle Value'
         >
           <MenuItem value=''>
             <em>None</em>

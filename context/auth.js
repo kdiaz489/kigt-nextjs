@@ -10,7 +10,6 @@ export function AuthProvider({ children }) {
       window.nookies = nookies;
     }
     return firebaseClient.auth().onIdTokenChanged(async (user) => {
-      console.log('Token Changed.');
       if (!user) {
         console.log('No token found.');
         setUser(null);
@@ -19,14 +18,10 @@ export function AuthProvider({ children }) {
         return;
       }
       console.log('Updating Token');
-      try {
-        const token = await user.getIdToken();
-        setUser(user);
-        nookies.destroy(null, 'token');
-        nookies.set(null, 'token', token, {});
-      } catch (error) {
-        console.log(error);
-      }
+      const token = await user.getIdToken();
+      setUser(user);
+      nookies.destroy(null, 'token');
+      nookies.set(null, 'token', token, {});
     });
   }, []);
 

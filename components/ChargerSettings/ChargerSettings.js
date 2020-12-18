@@ -1,12 +1,12 @@
-import {
-  Box,
-  Paper,
-  Typography,
-  makeStyles,
-  Grid,
-  TextField,
-  Button,
-} from '@material-ui/core';
+import Box from '@material-ui/core/Box';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import TransAmount from './TransAmount';
+import ThrottleAmount from './ThrottleAmount';
 
 const useStyles = makeStyles(() => ({
   paper: {
@@ -26,25 +26,22 @@ const ChargerSettings = ({ currentCharger }) => {
   const classes = useStyles();
   return (
     <Box display='flex' justifyContent='center'>
-      <Grid container>
+      <Grid container spacing={3}>
         <Grid item xs={12}>
           <Typography variant='h5'>
             Settings for Terminal ID: {currentCharger.id}
           </Typography>
         </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            margin='dense'
-            disabled
-            label='Transaction Amount'
-            defaultValue={currentCharger['SERVER Set Transaction Amount']}
-            fullWidth
+        <Grid item xs={12}>
+          <TransAmount
+            transAmount={currentCharger['SERVER Set Transaction Amount']}
           />
         </Grid>
-        <Grid container item xs={12} sm={6} justify='flex-end'>
-          <Button color='primary' className={classes.editButton}>
+        <Grid item xs={12} justify='flex-end'>
+          {/* <Button color='primary' className={classes.editButton}>
             Edit
-          </Button>
+          </Button> */}
+          <ThrottleAmount />
         </Grid>
       </Grid>
     </Box>

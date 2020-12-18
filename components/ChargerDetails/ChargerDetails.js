@@ -13,7 +13,13 @@ import PowerOffIcon from '@material-ui/icons/PowerOff';
 const useStyles = makeStyles((theme) => ({
   paper: {
     padding: '12px',
+    height: theme.spacing(25),
+    width: 'auto',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
   },
+
   status: {
     display: 'flex',
     alignItems: 'center',
@@ -200,7 +206,7 @@ const ChargerDetails = ({ currentCharger }) => {
     254: (
       <Box className={classes.status}>
         <div>
-          <PowerOffIcon fontSize='large' className={classes.purpleStatus} />
+          <PowerOffIcon fontSize='large' className={classes.yellowStatus} />
         </div>
         <Typography align='center' variant='h5'>
           Sleeping
@@ -213,7 +219,7 @@ const ChargerDetails = ({ currentCharger }) => {
     255: (
       <Box className={classes.status}>
         <div>
-          <WarningIcon fontSize='large' className={classes.yellowStatus} />
+          <CheckCircleIcon fontSize='large' className={classes.purpleStatus} />
         </div>
         <div>
           <Typography align='center' variant='h5'>
@@ -229,11 +235,11 @@ const ChargerDetails = ({ currentCharger }) => {
 
   return (
     <>
+      <Typography variant='h5' gutterBottom>
+        ID: {currentCharger['id']}
+      </Typography>
       <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <Typography variant='h5'>ID: {currentCharger['id']}</Typography>
-        </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12} md={4}>
           <Paper className={classes.paper}>
             <Typography align='center' variant='body1' gutterBottom>
               Health Status
@@ -257,7 +263,7 @@ const ChargerDetails = ({ currentCharger }) => {
             </Box>
           </Paper>
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12} md={4}>
           <Paper className={classes.paper}>
             <Typography align='center' variant='body1' gutterBottom>
               Payment Status
@@ -267,7 +273,7 @@ const ChargerDetails = ({ currentCharger }) => {
             </Typography>
           </Paper>
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12} md={4}>
           <Paper className={classes.paper}>
             <Typography align='center' variant='body1' gutterBottom>
               Kiosk Interaction Monitor

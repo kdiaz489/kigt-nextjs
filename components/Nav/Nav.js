@@ -1,17 +1,14 @@
-import {
-  Drawer,
-  List,
-  ListItem,
-  ListItemText,
-  Hidden,
-  CssBaseline,
-  AppBar,
-  Toolbar,
-  IconButton,
-  Divider,
-  makeStyles,
-  useTheme,
-} from '@material-ui/core';
+import Drawer from '@material-ui/core/Drawer';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import Hidden from '@material-ui/core/Hidden';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
+import Divider from '@material-ui/core/Divider';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -198,7 +195,7 @@ const Nav = (props) => {
             button
             onClick={async () => {
               await firebaseClient.auth().signOut();
-              router.push('/', undefined, { shallow: true });
+              window.location.href = '/';
             }}
             className={classes.listItem}
           >
