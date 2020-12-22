@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ThrottleSelect = () => {
+const ThrottleSelect = (props) => {
   const classes = useStyles();
   const [throttleVal, setThrottleVal] = useState('');
   const handleChange = (e) => {
@@ -21,11 +21,7 @@ const ThrottleSelect = () => {
   };
   return (
     <>
-      <FormControl
-        variant='outlined'
-        size='small'
-        className={classes.formControl}
-      >
+      <FormControl size='small' className={classes.formControl}>
         <InputLabel id='throttle-select'>Throttle Val</InputLabel>
         <Select
           labelId='throttle-select'
@@ -37,9 +33,11 @@ const ThrottleSelect = () => {
           <MenuItem value=''>
             <em>None</em>
           </MenuItem>
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
+          <MenuItem value={6}>6</MenuItem>
+          <MenuItem value={12}>12</MenuItem>
+          <MenuItem value={18}>18</MenuItem>
+          <MenuItem value={24}>24</MenuItem>
+          <MenuItem value={24}>28</MenuItem>
         </Select>
       </FormControl>
     </>

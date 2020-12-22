@@ -34,14 +34,15 @@ const ChargerSettings = ({ currentCharger }) => {
         </Grid>
         <Grid item xs={12}>
           <TransAmount
+            chargerId={currentCharger.id}
             transAmount={currentCharger['SERVER Set Transaction Amount']}
           />
         </Grid>
         <Grid item xs={12} justify='flex-end'>
-          {/* <Button color='primary' className={classes.editButton}>
-            Edit
-          </Button> */}
-          <ThrottleAmount />
+          <ThrottleAmount
+            chargerId={currentCharger.id}
+            throttleAmount={currentCharger['EVSE Max Current']}
+          />
         </Grid>
       </Grid>
     </Box>

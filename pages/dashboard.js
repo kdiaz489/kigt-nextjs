@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-// import whyDidYouRender from '@welldone-software/why-did-you-render';
 import NavWrapper from '../components/NavWrapper';
 import { makeStyles, Grid } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
@@ -13,12 +12,6 @@ import Button from '@material-ui/core/Button';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { useAuth } from '../context/auth';
 const drawerWidth = 240;
-// whyDidYouRender(React, {
-//   onlyLogs: true,
-//   trackAllPureComponents: true,
-//   titleColor: 'green',
-//   diffNameColor: 'darkturquoise',
-// });
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -63,8 +56,8 @@ const Dashboard = ({ chargers }) => {
   const [currentCharger, setCurrentCharger] = useState(null);
   const { user } = useAuth();
   console.log('Inside client');
-  const { data } = useSWR('/dashboard/getAllChargers', {
-    initialData: chargers,
+  const { data } = useSWR('/chargers', {
+    initialData: chargers || [],
   });
 
   return (
@@ -105,7 +98,7 @@ export const getServerSideProps = async (ctx) => {
     const token = await firebaseAdmin.auth().verifyIdToken(cookies.token);
     const { uid, email } = token;
     console.log('Inside server props');
-    const chargers = await axios.get('/dashboard/getAllChargers');
+    const chargers = await axios.get('/chargers');
     return { props: { uid, email, chargers: chargers.data } };
   } catch (error) {
     console.log('ERROR = ', error);
@@ -118,5 +111,5 @@ export const getServerSideProps = async (ctx) => {
     };
   }
 };
-// Dashboard.whyDidYouRender = true;
+
 export default Dashboard;
