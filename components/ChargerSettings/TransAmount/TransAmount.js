@@ -84,6 +84,7 @@ const TransAmount = ({ transAmount, chargerId }) => {
                     name='SERVER Set Transaction Amount'
                     margin='dense'
                     size='small'
+                    shrink
                     className={classes.textField}
                     InputProps={{
                       classes: {

@@ -14,6 +14,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { firebaseClient } from '../../firebaseClient';
 import { useAuth } from '../../context/auth';
+import { useNav } from '../../context/nav';
 import Logo from '../../public/img/KIGT_Logo.svg';
 const drawerWidth = 240;
 
@@ -95,27 +96,16 @@ const useStyles = makeStyles((theme) => ({
 
 const Nav = (props) => {
   const router = useRouter();
-  // const { user } = useSelector((state) => state.auth);
   const classes = useStyles();
-  // const dispatch = useDispatch();
-  // const { open } = useSelector((state) => state.drawer);
   const theme = useTheme();
   const pathname = router.pathname;
-  // const user = props.user;
-
   const { user } = useAuth();
-
+  const [open, toggleOpen] = useNav();
+  console.log('Nav Open State =  ', open);
+  console.log('Nav Toggle Function =', toggleOpen);
   const { window } = props;
   const container =
     window !== undefined ? () => window().document.body : undefined;
-
-  // const handleDrawerOpen = () => {
-  //   dispatch(setOpen(true));
-  // };
-
-  // const handleDrawerClose = () => {
-  //   dispatch(setOpen(false));
-  // };
 
   const drawerContent = (
     <div>
@@ -221,7 +211,7 @@ const Nav = (props) => {
           <IconButton
             color='inherit'
             aria-label='open drawer'
-            onClick={() => console.log('open')}
+            onClick={toggleOpen}
             edge='start'
             className={classes.menuButton}
           >
@@ -235,8 +225,8 @@ const Nav = (props) => {
             container={container}
             variant='temporary'
             anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-            open={false}
-            onClose={() => console.log('closed')}
+            open={open}
+            onClose={toggleOpen}
             classes={{ paper: classes.drawerPaper }}
             ModalProps={{
               keepMounted: true, // Better open performance on mobile.

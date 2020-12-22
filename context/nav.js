@@ -7,11 +7,11 @@ export const NavProvider = ({ children }) => {
   const [open, setOpen] = useState(false);
 
   const toggleOpen = () => {
-    setOpen((prevOpenState) => !!prevOpenState);
+    setOpen((prevOpenState) => !prevOpenState);
   };
   return (
-    <NavStateContext.Provider value={{ open }}>
-      <NavSetContext.Provider value={{ toggleOpen }}>
+    <NavStateContext.Provider value={open}>
+      <NavSetContext.Provider value={toggleOpen}>
         {children}
       </NavSetContext.Provider>
     </NavStateContext.Provider>

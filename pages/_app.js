@@ -17,8 +17,8 @@ config.autoAddCss = false;
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL;
 NProgress.configure({
   showSpinner: false,
-  trickleRate: 0.02,
-  trickleSpeed: 800,
+  trickleRate: 0.1,
+  trickleSpeed: 300,
 });
 
 Router.events.on('routeChangeStart', () => {
