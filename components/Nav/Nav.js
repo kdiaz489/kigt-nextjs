@@ -101,8 +101,6 @@ const Nav = (props) => {
   const pathname = router.pathname;
   const { user } = useAuth();
   const [open, toggleOpen] = useNav();
-  console.log('Nav Open State =  ', open);
-  console.log('Nav Toggle Function =', toggleOpen);
   const { window } = props;
   const container =
     window !== undefined ? () => window().document.body : undefined;
@@ -162,20 +160,6 @@ const Nav = (props) => {
             >
               <ListItemText
                 primary={'Throttle'}
-                classes={{ primary: classes.listItemText }}
-              />
-            </ListItem>
-          </Link> */}
-
-          {/* <Link underline='none' href='/support'>
-            <ListItem
-              button
-              className={classes.listItem}
-              selected={pathname === '/support'}
-              classes={{ root: classes.listItem, selected: classes.selected }}
-            >
-              <ListItemText
-                primary={'Support'}
                 classes={{ primary: classes.listItemText }}
               />
             </ListItem>

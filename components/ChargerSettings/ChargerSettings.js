@@ -3,8 +3,6 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
 import TransAmount from './TransAmount';
 import ThrottleAmount from './ThrottleAmount';
 
@@ -38,7 +36,7 @@ const ChargerSettings = ({ currentCharger }) => {
             transAmount={currentCharger['SERVER Set Transaction Amount']}
           />
         </Grid>
-        <Grid item xs={12} justify='flex-end'>
+        <Grid item xs={12}>
           <ThrottleAmount
             chargerId={currentCharger.id}
             throttleAmount={currentCharger['EVSE Max Current']}

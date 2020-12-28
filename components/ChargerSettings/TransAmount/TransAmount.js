@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
 import { Formik, Field, Form } from 'formik';
 import { object, number } from 'yup';
+import NumberFormat from 'react-number-format';
 
 const useStyles = makeStyles((theme) => ({
   disabledUnderline: {
@@ -24,6 +25,42 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
   },
 }));
+const NumberFormatCustom = (props) => {
+  const { inputRef, onChange, InputProps, ...other } = props;
+  return (
+    <NumberFormat
+      {...other}
+      getInputRef={inputRef}
+      onValueChange={(values) => {
+        onChange({
+          target: {
+            name: props.name,
+            value: values.value,
+          },
+        });
+      }}
+      decimalScale={2}
+      fixedDecimalScale={true}
+      isNumericString={true}
+      thousandSeparator={true}
+    />
+  );
+};
+const TextFieldCustom = (props) => {
+  const classes = useStyles();
+  return (
+    <TextField
+      InputProps={{
+        classes: {
+          disabled: classes.disabledUnderline,
+          input: classes.textField,
+        },
+        inputComponent: NumberFormatCustom,
+      }}
+      {...props}
+    />
+  );
+};
 
 const TransAmount = ({ transAmount, chargerId }) => {
   const classes = useStyles();
@@ -45,6 +82,7 @@ const TransAmount = ({ transAmount, chargerId }) => {
           'SERVER Set Transaction Amount': number().required(),
         })}
         onSubmit={async (values, formikHelpers) => {
+          console.log('ON SUBMIT');
           try {
             let res = await axios.put(`/chargers/${chargerId}`, values);
             setEditTrans((prevVal) => !prevVal);
@@ -70,7 +108,9 @@ const TransAmount = ({ transAmount, chargerId }) => {
                   alignItems='center'
                   justify='center'
                 >
-                  <Typography variant='body1'>Transaction Amount</Typography>
+                  <Typography variant='body1' align='center'>
+                    Transaction Amount
+                  </Typography>
                 </Grid>
                 <Grid
                   container
@@ -80,18 +120,11 @@ const TransAmount = ({ transAmount, chargerId }) => {
                   justify='center'
                 >
                   <Field
-                    as={TextField}
+                    as={TextFieldCustom}
                     name='SERVER Set Transaction Amount'
                     margin='dense'
                     size='small'
-                    shrink
                     className={classes.textField}
-                    InputProps={{
-                      classes: {
-                        disabled: classes.disabledUnderline,
-                        input: classes.textField,
-                      },
-                    }}
                     disabled={!editTrans}
                   />
                 </Grid>

@@ -85,7 +85,7 @@ export default function ChargerPanel(props) {
           <ChargerSettings currentCharger={props.currentCharger} />
         </TabPanel>
       </div>
-      <TroubleShootForm />
+      <TroubleShootForm currentCharger={props.currentCharger} />
     </>
   );
 }

@@ -10,6 +10,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import { object, string } from 'yup';
+import axios from 'axios';
 
 const initialValues = {
   fullName: '',
@@ -30,8 +31,9 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const TroubleShootForm = () => {
+const TroubleShootForm = ({ currentCharger }) => {
   const classes = useStyles();
+
   return (
     <Box display='flex' justifyContent='center'>
       <Paper className={classes.paper}>
@@ -46,13 +48,15 @@ const TroubleShootForm = () => {
             priority: string().required(),
           })}
           initialValues={initialValues}
-          onSubmit={(values, formikHelpers) => {
-            return new Promise((resolve, reject) => {
-              setTimeout(() => {
-                alert('Submitted ticket to Zendesk :)');
-                resolve();
-              }, 3000);
-            });
+          onSubmit={async (values, formikHelpers) => {
+            try {
+              let res = await axios.post(`/zendesk`, {
+                ...values,
+                charger: currentCharger.id,
+              });
+            } catch (error) {
+              console.log('Error submitting ticket to zendesk = ', error);
+            }
           }}
         >
           {({ values, errors, touched, isSubmitting, isValidating }) => (

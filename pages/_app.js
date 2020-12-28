@@ -13,6 +13,7 @@ import { config } from '@fortawesome/fontawesome-svg-core';
 import { Router } from 'next/dist/client/router';
 import { AuthProvider } from '../context/auth';
 import { NavProvider } from '../context/nav';
+import { SnackbarProvider } from 'notistack';
 config.autoAddCss = false;
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL;
 NProgress.configure({
@@ -93,13 +94,23 @@ export default class MyApp extends App {
           <CssBaseline />
 
           <SWRConfig
-            value={{ fetcher: (url) => axios(url).then((r) => r.data) }}
+            value={{
+              fetcher: (url, headerValue) =>
+                axios(url, {
+                  headers: {
+                    'Content-Type': 'application/json',
+                    authorization: headerValue,
+                  },
+                }).then((r) => r.data),
+            }}
           >
             <Container disableGutters maxWidth={false}>
               <Box marginTop={0}>
                 <AuthProvider>
                   <NavProvider>
-                    <Component {...pageProps} />
+                    <SnackbarProvider>
+                      <Component {...pageProps} />
+                    </SnackbarProvider>
                   </NavProvider>
                 </AuthProvider>
               </Box>

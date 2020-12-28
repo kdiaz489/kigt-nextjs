@@ -42,7 +42,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Register = (props) => {
-  // const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const classes = useStyles();
   const router = useRouter();
 

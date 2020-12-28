@@ -1,18 +1,18 @@
 import Link from 'next/link';
-import {
-  TextField,
-  FormGroup,
-  Box,
-  makeStyles,
-  Typography,
-  Button,
-  Grid,
-} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import FormGroup from '@material-ui/core/FormGroup';
+import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
 import { Formik, Field, Form } from 'formik';
 import { object, string } from 'yup';
+import axios from 'axios';
+import { useRouter } from 'next/router';
 
 const initialValues = {
-  name: '',
+  displayName: '',
   email: '',
   password: '',
 };
@@ -39,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
 
 const RegisterForm = () => {
   const classes = useStyles();
+  const router = useRouter();
   // const dispatch = useDispatch();
 
   return (
@@ -47,22 +48,18 @@ const RegisterForm = () => {
       <Formik
         initialValues={initialValues}
         validationSchema={object({
-          name: string().required(),
+          displayName: string().required(),
           email: string().email().required(),
           password: string().required().min(6),
         })}
-        onSubmit={(values, formikHelpers) => {
-          // dispatch(register(values))
-          //   .then(unwrapResult)
-          //   .then((res) => {
-          //     console.log('SUCCESS', res);
-          //     formikHelpers.setSubmitting(false);
-          //   })
-          //   .catch((err) => {
-          //     console.log('ERROR', err);
-          //     formikHelpers.setSubmitting(false);
-          //   });
-          console.log(values);
+        onSubmit={async (values, formikHelpers) => {
+          try {
+            console.log('Inside on Submit');
+            let res = await axios.post('/auth/register', values);
+            router.push('/dashboard');
+          } catch (error) {
+            console.log('Error registering', error);
+          }
         }}
       >
         {({ values, touched, errors, isSubmitting, isValidating }) => (
@@ -70,16 +67,18 @@ const RegisterForm = () => {
             <Box mb={2}>
               <FormGroup>
                 <Field
-                  name='name'
+                  name='displayName'
                   as={TextField}
                   label='Name'
                   variant='outlined'
                   margin='dense'
                   fullWidth
                   helperText={
-                    touched.name && Boolean(errors.name) && 'Name is required'
+                    touched.displayName &&
+                    Boolean(errors.displayName) &&
+                    'Name is required'
                   }
-                  error={touched.name && Boolean(errors.name)}
+                  error={touched.displayName && Boolean(errors.displayName)}
                 />
               </FormGroup>
             </Box>

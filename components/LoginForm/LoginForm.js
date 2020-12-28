@@ -6,8 +6,6 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import FormGroup from '@material-ui/core/FormGroup';
 import Link from 'next/link';
-// import useLogin from '../../hooks/useLogin';
-
 import { useRouter } from 'next/router';
 import { Formik, Field, Form } from 'formik';
 import { object, string } from 'yup';
@@ -86,15 +84,6 @@ const LoginForm = (props) => {
   const classes = useStyles();
   const router = useRouter();
 
-  // const { isAuthenticated, emailpassLogin } = useLogin();
-
-  // useEffect(() => {
-  //   if (isAuthenticated) {
-  //     router.push('/dashboard');
-  //   }
-
-  //   // eslint-disable-next-line
-  // }, [isAuthenticated, props.history]);
   return (
     <>
       <Typography component='h1' variant='h5'>

@@ -18,11 +18,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const NavWrapper = ({ user, children }) => {
+const NavWrapper = ({ children }) => {
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      <Nav user={user} />
+      <Nav />
 
       <main className={classes.content}>
         <div className={classes.toolbar} />
