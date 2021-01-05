@@ -9,6 +9,9 @@ import axios from 'axios';
 import { Formik, Field, Form } from 'formik';
 import { object, number } from 'yup';
 import NumberFormat from 'react-number-format';
+import { useNotification } from '../../../context/notification';
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+import InputAdornment from '@material-ui/core/InputAdornment';
 
 const useStyles = makeStyles((theme) => ({
   disabledUnderline: {
@@ -43,6 +46,7 @@ const NumberFormatCustom = (props) => {
       fixedDecimalScale={true}
       isNumericString={true}
       thousandSeparator={true}
+      prefix={'$'}
     />
   );
 };
@@ -65,6 +69,7 @@ const TextFieldCustom = (props) => {
 const TransAmount = ({ transAmount, chargerId }) => {
   const classes = useStyles();
   const [editTrans, setEditTrans] = useState(false);
+  const { enqueueSnackbar, closeSnackbar } = useNotification();
 
   const toggleEdit = (e) => {
     e.preventDefault();
@@ -82,13 +87,19 @@ const TransAmount = ({ transAmount, chargerId }) => {
           'SERVER Set Transaction Amount': number().required(),
         })}
         onSubmit={async (values, formikHelpers) => {
-          console.log('ON SUBMIT');
           try {
             let res = await axios.put(`/chargers/${chargerId}`, values);
             setEditTrans((prevVal) => !prevVal);
+            enqueueSnackbar('Successfully updated transaction amount.', {
+              variant: 'success',
+            });
           } catch (error) {
-            console.log('Error trying to update transaction amount');
-            console.log(error);
+            enqueueSnackbar(
+              'Error updating transaction amount. Please try again.',
+              {
+                variant: 'error',
+              },
+            );
           }
         }}
       >
@@ -126,6 +137,15 @@ const TransAmount = ({ transAmount, chargerId }) => {
                     size='small'
                     className={classes.textField}
                     disabled={!editTrans}
+                    helperText={
+                      touched['SERVER Set Transaction Amount'] &&
+                      Boolean(errors['SERVER Set Transaction Amount']) &&
+                      'Transaction amount is required'
+                    }
+                    error={
+                      touched['SERVER Set Transaction Amount'] &&
+                      Boolean(errors['SERVER Set Transaction Amount'])
+                    }
                   />
                 </Grid>
                 <Grid

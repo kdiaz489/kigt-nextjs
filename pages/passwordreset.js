@@ -5,7 +5,8 @@ import Divider from '@material-ui/core/Divider';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { useRouter } from 'next/router';
-import ResetPasswordForm from '../components/ResetPasswordForm';
+import PasswordResetForm from '../components/PasswordResetForm';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '100vh',
@@ -29,7 +30,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Copyright = () => {
-  const classes = useStyles();
   return (
     <Typography variant='body2' color='secondary' align='center'>
       {'Copyright © '}
@@ -39,7 +39,7 @@ const Copyright = () => {
   );
 };
 
-const ResetPassword = (props) => {
+const PasswordReset = (props) => {
   const classes = useStyles();
   const router = useRouter();
   // const { isAuthenticated } = useLogin();
@@ -55,7 +55,7 @@ const ResetPassword = (props) => {
       <Grid container component='main' className={classes.root}>
         <Grid item xs={12} sm={8} md={5} component={Paper} square>
           <div className={classes.paper}>
-            <ResetPasswordForm />
+            <PasswordResetForm />
             <Box mt={5}>
               <Copyright />
             </Box>
@@ -67,4 +67,4 @@ const ResetPassword = (props) => {
   );
 };
 
-export default ResetPassword;
+export default PasswordReset;

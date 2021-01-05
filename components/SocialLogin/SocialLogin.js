@@ -9,6 +9,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { faMicrosoft } from '@fortawesome/free-brands-svg-icons';
 import { useRouter } from 'next/router';
+import { useNotification } from '../../context/notification';
+
 const useStyles = makeStyles((theme) => ({
   googleLogin: {
     backgroundColor: '#e14928',
@@ -31,12 +33,32 @@ const useStyles = makeStyles((theme) => ({
 const SocialLogin = () => {
   const classes = useStyles();
   const router = useRouter();
+  const { enqueueSnackbar, closeSnackbar } = useNotification();
+
   const googleLogin = async () => {
     try {
-      await firebaseClient.auth().signInWithPopup(googleProvider);
+      let googleRes = await firebaseClient
+        .auth()
+        .signInWithPopup(googleProvider);
+      let { user } = googleRes;
+      let firebaseRes = await firebaseClient
+        .firestore()
+        .collection('users')
+        .doc(user.uid)
+        .set({
+          displayName: user.displayName,
+          email: user.email,
+          address: '',
+          chargers: [],
+          uid: user.uid,
+        });
+
       router.push('/dashboard');
     } catch (error) {
-      console.log('GOOGLE LOGIN ERROR', error);
+      console.log(error);
+      enqueueSnackbar('Error logging in with your Google account.', {
+        variant: 'error',
+      });
     }
   };
   // const { loginGoogleSubmit, loginMicrosoftSubmit } = useLogin();

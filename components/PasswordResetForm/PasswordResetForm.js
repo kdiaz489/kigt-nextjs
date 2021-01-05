@@ -1,15 +1,14 @@
 import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import FormGroup from '@material-ui/core/FormGroup';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { Formik, Field, Form } from 'formik';
 import { object, string } from 'yup';
 import { firebaseClient } from '../../firebaseClient';
+import { useNotification } from '../../context/notification';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '100vh',
@@ -78,6 +77,8 @@ const initialValues = {
 };
 const PasswordResetForm = () => {
   const classes = useStyles();
+  const { enqueueSnackbar, closeSnackbar } = useNotification();
+
   return (
     <>
       <Typography variant='h5'>Password Reset</Typography>
@@ -91,8 +92,19 @@ const PasswordResetForm = () => {
             let res = await firebaseClient
               .auth()
               .sendPasswordResetEmail(values.email);
+            enqueueSnackbar(
+              'Success. Please check your email for next steps.',
+              {
+                variant: 'success',
+              },
+            );
           } catch (error) {
-            console.log('ERROR', error);
+            enqueueSnackbar(
+              'Error sending password reset email. Please try again.',
+              {
+                variant: 'error',
+              },
+            );
           }
         }}
       >

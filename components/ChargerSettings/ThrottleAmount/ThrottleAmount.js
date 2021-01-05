@@ -10,6 +10,7 @@ import axios from 'axios';
 import { Formik, Field, Form } from 'formik';
 import { object, number } from 'yup';
 import { MenuItem } from '@material-ui/core';
+import { useNotification } from '../../../context/notification';
 
 const useStyles = makeStyles((theme) => ({
   disabledUnderline: {
@@ -29,26 +30,36 @@ const useStyles = makeStyles((theme) => ({
 const ThrottleAmount = ({ throttleAmount, chargerId }) => {
   const classes = useStyles();
   const [editThrottle, setEditThrottle] = useState(false);
-  console.log(throttleAmount);
+  const { enqueueSnackbar, closeSnackbar } = useNotification();
+
   const toggleEdit = (e) => {
     e.preventDefault();
     setEditThrottle((prevEditThrottle) => !prevEditThrottle);
   };
   const initialValues = {
-    'EVSE Max Current': throttleAmount,
+    'SERVER Set Current Max': throttleAmount,
   };
   return (
     <>
       <Formik
         initialValues={initialValues}
-        validationSchema={object({ 'EVSE Max Current': number().required() })}
+        validationSchema={object({
+          'SERVER Set Current Max': number().required(),
+        })}
         onSubmit={async (values, formikHelpers) => {
           try {
             let res = await axios.put(`/chargers/${chargerId}`, values);
             setEditThrottle((prevVal) => !prevVal);
+            enqueueSnackbar('Successfully throttled charger.', {
+              variant: 'success',
+            });
           } catch (error) {
-            console.log('Error trying to update transaction amount');
-            console.log(error);
+            enqueueSnackbar(
+              'Error trying to throttle charger. Please try again.',
+              {
+                variant: 'error',
+              },
+            );
           }
         }}
       >
@@ -78,7 +89,7 @@ const ThrottleAmount = ({ throttleAmount, chargerId }) => {
                   justify='center'
                 >
                   <Field
-                    name='EVSE Max Current'
+                    name='SERVER Set Current Max'
                     defaultValue={throttleAmount}
                     as={TextField}
                     select
@@ -90,6 +101,15 @@ const ThrottleAmount = ({ throttleAmount, chargerId }) => {
                         input: classes.textField,
                       },
                     }}
+                    helperText={
+                      touched['SERVER Set Current Max'] &&
+                      Boolean(errors['SERVER Set Current Max']) &&
+                      'Throttle amount is required'
+                    }
+                    error={
+                      touched['SERVER Set Current Max'] &&
+                      Boolean(errors['SERVER Set Current Max'])
+                    }
                   >
                     <MenuItem value={'6'}>6</MenuItem>
                     <MenuItem value={'12'}>12</MenuItem>

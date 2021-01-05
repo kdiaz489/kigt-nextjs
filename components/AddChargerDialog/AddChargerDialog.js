@@ -14,10 +14,13 @@ import { useTheme } from '@material-ui/core/styles';
 import axios from 'axios';
 import { parseCookies } from 'nookies';
 import { mutate } from 'swr';
+import { useNotification } from '../../context/notification';
+import { object, string } from 'yup';
 
 const AddChargerDialog = () => {
   const [open, setOpen] = useState(false);
   const theme = useTheme();
+  const { enqueueSnackbar, closeSnackbar } = useNotification();
 
   const initialValues = {
     chargerId: '',
@@ -55,6 +58,14 @@ const AddChargerDialog = () => {
         <DialogTitle id='form-dialog-title'>Add charger</DialogTitle>
         <Formik
           initialValues={initialValues}
+          validationSchema={object({
+            chargerId: string().required(),
+            chargerName: string().required(),
+            merchantName: string().required(),
+            model: string().required().oneOf(['IM30']),
+            kioskId: string().required(),
+            serialNumber: string().required(),
+          })}
           onSubmit={async (values, formikHelpers) => {
             try {
               let res = await axios.post('/chargers', values, {
@@ -85,8 +96,13 @@ const AddChargerDialog = () => {
               //   },
               //   false,
               // );
+              enqueueSnackbar('Successfully added charger.', {
+                variant: 'success',
+              });
             } catch (error) {
-              console.log('ERROR ADDING CHARGER');
+              enqueueSnackbar('Error adding charger. Please try again.', {
+                variant: 'error',
+              });
             }
           }}
         >
@@ -105,6 +121,12 @@ const AddChargerDialog = () => {
                     id='chargerId'
                     label='Charger ID'
                     fullWidth
+                    helperText={
+                      touched.chargerId &&
+                      Boolean(errors.chargerId) &&
+                      'Charger Id is required'
+                    }
+                    error={touched.chargerId && Boolean(errors.chargerId)}
                   />
                 </FormGroup>
                 <FormGroup>
@@ -115,6 +137,12 @@ const AddChargerDialog = () => {
                     id='chargerName'
                     label='Charger Name'
                     fullWidth
+                    helperText={
+                      touched.chargerName &&
+                      Boolean(errors.chargerName) &&
+                      'Charger Name is required'
+                    }
+                    error={touched.chargerName && Boolean(errors.chargerName)}
                   />
                 </FormGroup>
                 <FormGroup>
@@ -125,6 +153,12 @@ const AddChargerDialog = () => {
                     id='merchantName'
                     label='Merchant Name'
                     fullWidth
+                    helperText={
+                      touched.merchantName &&
+                      Boolean(errors.merchantName) &&
+                      'Merchant name is required'
+                    }
+                    error={touched.merchantName && Boolean(errors.merchantName)}
                   />
                 </FormGroup>
                 <FormGroup>
@@ -136,6 +170,12 @@ const AddChargerDialog = () => {
                     label='Model'
                     fullWidth
                     select
+                    helperText={
+                      touched.model &&
+                      Boolean(errors.model) &&
+                      'Model is required'
+                    }
+                    error={touched.model && Boolean(errors.model)}
                   >
                     <MenuItem value={'IM30'}>IM30</MenuItem>
                   </Field>
@@ -148,6 +188,12 @@ const AddChargerDialog = () => {
                     id='kioskId'
                     label='Kiosk Id'
                     fullWidth
+                    helperText={
+                      touched.kioskId &&
+                      Boolean(errors.kioskId) &&
+                      'Kiosk Id is required'
+                    }
+                    error={touched.kioskId && Boolean(errors.kioskId)}
                   />
                 </FormGroup>
                 <FormGroup>
@@ -158,6 +204,12 @@ const AddChargerDialog = () => {
                     id='serialNumber'
                     label='Serial Number'
                     fullWidth
+                    helperText={
+                      touched.serialNumber &&
+                      Boolean(errors.serialNumber) &&
+                      'Serial number is required'
+                    }
+                    error={touched.serialNumber && Boolean(errors.serialNumber)}
                   />
                 </FormGroup>
               </DialogContent>

@@ -1,16 +1,16 @@
 import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import FormGroup from '@material-ui/core/FormGroup';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { Formik, Field, Form } from 'formik';
 import { object, string } from 'yup';
 import { firebaseClient } from '../../firebaseClient';
 import { useNotification } from '../../context/notification';
+import { useRouter } from 'next/router';
+import Grid from '@material-ui/core/Grid';
+import Link from 'next/link';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -75,109 +75,108 @@ const useStyles = makeStyles((theme) => ({
     textTransform: 'none',
   },
 }));
-
 const initialValues = {
-  email: '',
   password: '',
+  passwordConfirmation: '',
 };
-
-const LoginForm = (props) => {
+const ResetPasswordForm = ({ code }) => {
   const classes = useStyles();
   const router = useRouter();
   const { enqueueSnackbar, closeSnackbar } = useNotification();
 
   return (
     <>
-      <Typography component='h1' variant='h5'>
-        Sign in to Your Account
-      </Typography>
+      <Typography variant='h5'>Reset Your Password</Typography>
       <Formik
         initialValues={initialValues}
         validationSchema={object({
-          email: string().email().required(),
           password: string().required(),
+          passwordConfirmation: string()
+            .required()
+            .test('passwords-match', 'Passwords must match.', function (value) {
+              return this.parent.password === value;
+            }),
         })}
         onSubmit={async (values, formikHelpers) => {
-          /* must return promise */
           try {
-            await firebaseClient
+            let res = await firebaseClient
               .auth()
-              .signInWithEmailAndPassword(values.email, values.password);
-            router.push('/dashboard');
+              .confirmPasswordReset(code, values.password);
+            router.push('/');
           } catch (error) {
-            enqueueSnackbar('Error logging in. Please try again.', {
-              variant: 'error',
-            });
-            console.log('Error', error);
+            console.log(error);
+            enqueueSnackbar(
+              'Error resetting your password. Please try again.',
+              {
+                variant: 'error',
+              },
+            );
           }
         }}
       >
-        {({ values, errors, touched, isSubmitting, isValidating }) => (
+        {({ values, isSubmitting, isValidating, errors, touched }) => (
           <Form className={classes.form}>
             <Box mb={2}>
               <FormGroup>
                 <Field
-                  name='email'
-                  as={TextField}
-                  label='Email'
-                  variant='outlined'
-                  margin='dense'
-                  fullWidth
-                  helperText={
-                    touched.email &&
-                    Boolean(errors.email) &&
-                    'Email is required'
-                  }
-                  error={touched.email && Boolean(errors.email)}
-                />
-              </FormGroup>
-            </Box>
-            <Box mb={2}>
-              <FormGroup>
-                <Field
                   name='password'
-                  as={TextField}
-                  label='Password'
                   variant='outlined'
+                  label='Password'
+                  type='password'
+                  as={TextField}
                   margin='dense'
                   fullWidth
-                  type='password'
                   helperText={
-                    touched.password &&
-                    Boolean(errors.password) &&
-                    'Password is required'
+                    touched.password && Boolean(errors.password) && 'Required'
                   }
                   error={touched.password && Boolean(errors.password)}
                 />
               </FormGroup>
             </Box>
+            <Box mb={2}>
+              <FormGroup>
+                <Field
+                  name='passwordConfirmation'
+                  variant='outlined'
+                  label='Confirm New Password'
+                  type='password'
+                  as={TextField}
+                  margin='dense'
+                  fullWidth
+                  helperText={
+                    touched.passwordConfirmation &&
+                    Boolean(errors.passwordConfirmation) &&
+                    'Passwords must match'
+                  }
+                  error={
+                    touched.passwordConfirmation &&
+                    Boolean(errors.passwordConfirmation)
+                  }
+                />
+              </FormGroup>
+            </Box>
             <Button
+              variant='contained'
+              color='primary'
               type='submit'
               fullWidth
-              variant='contained'
               className={classes.submit}
               disabled={isSubmitting || isValidating}
             >
-              Sign In
+              Reset
             </Button>
           </Form>
         )}
       </Formik>
-
       <Grid container>
-        <Grid item xs>
-          <Button className={classes.lowerCaseButton}>
-            <Link href='/passwordreset'>
-              <a className={classes.link}>Forgot Password?</a>
-            </Link>
-          </Button>
-        </Grid>
         <Grid item>
-          <Button className={classes.lowerCaseButton}>
-            <Link href='/register'>
-              <a className={classes.link}>
-                <Typography color='inherit'>Register</Typography>
-              </a>
+          <Button
+            color='primary'
+            variant='text'
+            className={classes.lowerCaseButton}
+          >
+            <Link href='/'>
+              <a className={classes.link}>Login</a>
             </Link>
           </Button>
         </Grid>
@@ -186,4 +185,4 @@ const LoginForm = (props) => {
   );
 };
 
-export default LoginForm;
+export default ResetPasswordForm;

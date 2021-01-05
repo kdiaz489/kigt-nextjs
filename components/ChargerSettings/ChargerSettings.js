@@ -39,7 +39,7 @@ const ChargerSettings = ({ currentCharger }) => {
         <Grid item xs={12}>
           <ThrottleAmount
             chargerId={currentCharger.id}
-            throttleAmount={currentCharger['EVSE Max Current']}
+            throttleAmount={currentCharger['SERVER Set Current Max']}
           />
         </Grid>
       </Grid>

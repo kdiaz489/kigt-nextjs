@@ -13,6 +13,7 @@ import { config } from '@fortawesome/fontawesome-svg-core';
 import { Router } from 'next/dist/client/router';
 import { AuthProvider } from '../context/auth';
 import { NavProvider } from '../context/nav';
+import { NotificationProvider } from '../context/notification';
 import { SnackbarProvider } from 'notistack';
 config.autoAddCss = false;
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL;
@@ -109,7 +110,9 @@ export default class MyApp extends App {
                 <AuthProvider>
                   <NavProvider>
                     <SnackbarProvider>
-                      <Component {...pageProps} />
+                      <NotificationProvider>
+                        <Component {...pageProps} />
+                      </NotificationProvider>
                     </SnackbarProvider>
                   </NavProvider>
                 </AuthProvider>

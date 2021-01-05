@@ -10,6 +10,7 @@ import { Formik, Field, Form } from 'formik';
 import { object, string } from 'yup';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import { useNotification } from '../../context/notification';
 
 const initialValues = {
   displayName: '',
@@ -40,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
 const RegisterForm = () => {
   const classes = useStyles();
   const router = useRouter();
-  // const dispatch = useDispatch();
+  const { enqueueSnackbar, closeSnackbar } = useNotification();
 
   return (
     <>
@@ -58,7 +59,12 @@ const RegisterForm = () => {
             let res = await axios.post('/auth/register', values);
             router.push('/dashboard');
           } catch (error) {
-            console.log('Error registering', error);
+            enqueueSnackbar(
+              'Error registering your account. Please try again.',
+              {
+                variant: 'error',
+              },
+            );
           }
         }}
       >
