@@ -15,7 +15,6 @@ const Dashboard = () => {
   const [currentCharger, setCurrentCharger] = useState(null);
   let { token: authToken } = parseCookies();
   const { data } = useSWR(['/chargers', `Bearer ${authToken} `]);
-  const router = useRouter();
 
   if (!data) {
     return (
