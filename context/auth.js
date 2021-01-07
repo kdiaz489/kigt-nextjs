@@ -14,7 +14,8 @@ export function AuthProvider({ children }) {
         console.log('No token found.');
         setUser(null);
         nookies.destroy(null, 'token');
-        nookies.set(null, 'token', '', {});
+        // nookies.set(null, 'token', '', {});
+
         return;
       }
       console.log('Updating Token');

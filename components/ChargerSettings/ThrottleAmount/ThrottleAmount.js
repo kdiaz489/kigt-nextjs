@@ -44,7 +44,9 @@ const ThrottleAmount = ({ throttleAmount, chargerId }) => {
       <Formik
         initialValues={initialValues}
         validationSchema={object({
-          'SERVER Set Current Max': number().required(),
+          'SERVER Set Current Max': number('Must be a valid value').required(
+            'Required',
+          ),
         })}
         onSubmit={async (values, formikHelpers) => {
           try {
@@ -104,18 +106,18 @@ const ThrottleAmount = ({ throttleAmount, chargerId }) => {
                     helperText={
                       touched['SERVER Set Current Max'] &&
                       Boolean(errors['SERVER Set Current Max']) &&
-                      'Throttle amount is required'
+                      errors['SERVER Set Current Max']
                     }
                     error={
                       touched['SERVER Set Current Max'] &&
                       Boolean(errors['SERVER Set Current Max'])
                     }
                   >
-                    <MenuItem value={'6'}>6</MenuItem>
-                    <MenuItem value={'12'}>12</MenuItem>
-                    <MenuItem value={'18'}>18</MenuItem>
-                    <MenuItem value={'24'}>24</MenuItem>
-                    <MenuItem value={'28'}>28</MenuItem>
+                    <MenuItem value={6}>6</MenuItem>
+                    <MenuItem value={12}>12</MenuItem>
+                    <MenuItem value={18}>18</MenuItem>
+                    <MenuItem value={24}>24</MenuItem>
+                    <MenuItem value={28}>28</MenuItem>
                   </Field>
                 </Grid>
                 <Grid

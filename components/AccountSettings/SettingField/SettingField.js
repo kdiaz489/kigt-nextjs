@@ -5,11 +5,13 @@ import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import ThrottleSelect from '../../ThrottleSelect';
 import axios from 'axios';
 import { Formik, Field, Form } from 'formik';
-import { object, number } from 'yup';
-import NumberFormat from 'react-number-format';
+import { object, number, string, email } from 'yup';
+import { MenuItem } from '@material-ui/core';
 import { useNotification } from '../../../context/notification';
+import { parseCookies } from 'nookies';
 
 const useStyles = makeStyles((theme) => ({
   disabledUnderline: {
@@ -21,83 +23,40 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
   },
-
   textField: {
     textAlign: 'center',
   },
 }));
-const NumberFormatCustom = (props) => {
-  const { inputRef, onChange, InputProps, ...other } = props;
-  return (
-    <NumberFormat
-      {...other}
-      getInputRef={inputRef}
-      onValueChange={(values) => {
-        onChange({
-          target: {
-            name: props.name,
-            value: values.value,
-          },
-        });
-      }}
-      decimalScale={2}
-      fixedDecimalScale={true}
-      thousandSeparator={true}
-      prefix={'$'}
-    />
-  );
-};
-const TextFieldCustom = (props) => {
-  const classes = useStyles();
-  return (
-    <TextField
-      InputProps={{
-        classes: {
-          disabled: classes.disabledUnderline,
-          input: classes.textField,
-        },
-        inputComponent: NumberFormatCustom,
-      }}
-      {...props}
-    />
-  );
-};
 
-const TransAmount = ({ transAmount, chargerId }) => {
+const SettingField = ({ name, initialValues, title, validationSchema }) => {
   const classes = useStyles();
-  const [editTrans, setEditTrans] = useState(false);
+  const [edit, setEdit] = useState(false);
+  const { token: clientToken } = parseCookies();
   const { enqueueSnackbar, closeSnackbar } = useNotification();
 
   const toggleEdit = (e) => {
     e.preventDefault();
-    setEditTrans((prevEditTrans) => !prevEditTrans);
+    setEdit((prevEditThrottle) => !prevEditThrottle);
   };
-
-  const initialValues = {
-    'SERVER Set Transaction Amount': transAmount,
-  };
+  const initialVals = initialValues;
   return (
     <>
       <Formik
-        initialValues={initialValues}
-        validationSchema={object({
-          'SERVER Set Transaction Amount': number(
-            'Must be a valid value',
-          ).required('Required'),
-        })}
+        initialValues={initialVals}
+        validationSchema={object(validationSchema)}
         onSubmit={async (values, formikHelpers) => {
           try {
-            values['SERVER Set Transaction Amount'] = parseInt(
-              values['SERVER Set Transaction Amount'],
-            );
-            let res = await axios.put(`/chargers/${chargerId}`, values);
-            setEditTrans((prevVal) => !prevVal);
-            enqueueSnackbar('Successfully updated transaction amount.', {
+            let res = await axios.put(`/auth/updateAccount`, values, {
+              headers: { authorization: `Bearer ${clientToken}` },
+            });
+            setEdit((prevVal) => !prevVal);
+            enqueueSnackbar('Account successfully updated.', {
               variant: 'success',
             });
           } catch (error) {
+            console.log(error);
             enqueueSnackbar(
-              'Error updating transaction amount. Please try again.',
+              'Error trying to update your account. Please try again.',
               {
                 variant: 'error',
               },
@@ -121,9 +80,7 @@ const TransAmount = ({ transAmount, chargerId }) => {
                   alignItems='center'
                   justify='center'
                 >
-                  <Typography variant='body1' align='center'>
-                    Transaction Amount
-                  </Typography>
+                  <Typography variant='body1'>{title}</Typography>
                 </Grid>
                 <Grid
                   container
@@ -133,22 +90,20 @@ const TransAmount = ({ transAmount, chargerId }) => {
                   justify='center'
                 >
                   <Field
-                    as={TextFieldCustom}
-                    name='SERVER Set Transaction Amount'
-                    margin='dense'
-                    size='small'
-                    number
-                    className={classes.textField}
-                    disabled={!editTrans}
+                    name={name}
+                    as={TextField}
+                    fullWidth
+                    disabled={!edit}
+                    InputProps={{
+                      classes: {
+                        disabled: classes.disabledUnderline,
+                        input: classes.textField,
+                      },
+                    }}
                     helperText={
-                      touched['SERVER Set Transaction Amount'] &&
-                      Boolean(errors['SERVER Set Transaction Amount']) &&
-                      errors['SERVER Set Transaction Amount']
+                      touched[name] && Boolean(errors[name]) && errors[name]
                     }
-                    error={
-                      touched['SERVER Set Transaction Amount'] &&
-                      Boolean(errors['SERVER Set Transaction Amount'])
-                    }
+                    error={touched[name] && Boolean(errors[name])}
                   />
                 </Grid>
                 <Grid
@@ -159,7 +114,7 @@ const TransAmount = ({ transAmount, chargerId }) => {
                   alignItems='center'
                   justify='center'
                 >
-                  {editTrans ? (
+                  {edit ? (
                     <>
                       <Grid item xs={6}>
                         <Button
@@ -196,4 +151,4 @@ const TransAmount = ({ transAmount, chargerId }) => {
   );
 };
 
-export default TransAmount;
+export default SettingField;

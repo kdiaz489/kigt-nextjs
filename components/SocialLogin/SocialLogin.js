@@ -61,7 +61,6 @@ const SocialLogin = () => {
       });
     }
   };
-  // const { loginGoogleSubmit, loginMicrosoftSubmit } = useLogin();
   return (
     <Box textAlign='center' mt={3}>
       <Typography variant='body1'>Or Sign In With</Typography>
@@ -74,6 +73,7 @@ const SocialLogin = () => {
           </Grid>
           <Grid item>
             <Button
+              disabled
               className={classes.microsoftLogin}
               onClick={() => console.log('login')}
             >

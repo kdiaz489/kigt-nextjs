@@ -11,14 +11,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import { object, string } from 'yup';
 import axios from 'axios';
-
-const initialValues = {
-  fullName: '',
-  email: '',
-  subject: '',
-  body: '',
-  priority: 'normal',
-};
+import { useAuth } from '../../context/auth';
 
 const useStyles = makeStyles(() => ({
   paper: {
@@ -33,6 +26,14 @@ const useStyles = makeStyles(() => ({
 
 const TroubleShootForm = ({ currentCharger }) => {
   const classes = useStyles();
+  const { user } = useAuth();
+  const initialValues = {
+    fullName: user?.displayName ?? '',
+    email: user?.email ?? '',
+    subject: '',
+    body: '',
+    priority: 'normal',
+  };
 
   return (
     <Box display='flex' justifyContent='center'>
@@ -66,7 +67,7 @@ const TroubleShootForm = ({ currentCharger }) => {
                   <Field
                     name='fullName'
                     as={TextField}
-                    label='Full Name'
+                    label='Name'
                     error={touched.fullName && Boolean(errors.fullName)}
                   />
                 </FormGroup>

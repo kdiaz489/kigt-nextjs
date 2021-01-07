@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import NavWrapper from '../components/NavWrapper';
 import { parseCookies } from 'nookies';
 import ChargerTable from '../components/ChargerTable';
@@ -9,13 +9,31 @@ import ChargerTableSkeleton from '../components/ChargerTableSkeleton';
 import DashboardHeader from '../components/DashboardHeader';
 import AddChargerDialog from '../components/AddChargerDialog';
 import Grid from '@material-ui/core/Grid';
+import Head from 'next/head';
+
 const Dashboard = () => {
   const [currentCharger, setCurrentCharger] = useState(null);
   let { token: authToken } = parseCookies();
   const { data } = useSWR(['/chargers', `Bearer ${authToken} `]);
+  const router = useRouter();
 
   if (!data) {
-    return <ChargerTableSkeleton />;
+    return (
+      <>
+        <Head>
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+              if (!document.cookie.includes('token')) {
+                window.location.href = "/"
+              }
+            `,
+            }}
+          />
+        </Head>
+        <ChargerTableSkeleton />
+      </>
+    );
   }
   if (data.chargers.length) {
     return (
