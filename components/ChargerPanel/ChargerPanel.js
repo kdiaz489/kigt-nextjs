@@ -4,11 +4,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import ChargerDetails from '../ChargerDetails';
-import ChargerSettings from '../ChargerSettings';
-import TroubleShootForm from '../TroubleShootForm';
+import ChargerDetails from './ChargerDetails';
+import ChargerSettings from './ChargerSettings';
+import TroubleShootForm from './TroubleShootForm';
+import { useChargers } from '../../context/chargers';
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -56,6 +57,7 @@ const useStyles = makeStyles((theme) => ({
 export default function ChargerPanel(props) {
   const classes = useStyles();
   const [value, setValue] = useState(0);
+  const { currentCharger, setCurrentCharger } = useChargers();
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -79,13 +81,13 @@ export default function ChargerPanel(props) {
           </Tabs>
         </AppBar>
         <TabPanel value={value} index={0}>
-          <ChargerDetails currentCharger={props.currentCharger} />
+          <ChargerDetails currentCharger={currentCharger} />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <ChargerSettings currentCharger={props.currentCharger} />
+          <ChargerSettings currentCharger={currentCharger} />
         </TabPanel>
       </div>
-      <TroubleShootForm currentCharger={props.currentCharger} />
+      <TroubleShootForm currentCharger={currentCharger} />
     </>
   );
 }

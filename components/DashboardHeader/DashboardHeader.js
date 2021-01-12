@@ -2,6 +2,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { makeStyles } from '@material-ui/core';
+import { useChargers } from '../../context/chargers';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -9,8 +10,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DashboardHeader = ({ currentCharger, setCurrentCharger }) => {
+const DashboardHeader = (props) => {
   const classes = useStyles();
+  const { currentCharger, setCurrentCharger } = useChargers();
   return (
     <>
       {!!currentCharger && (

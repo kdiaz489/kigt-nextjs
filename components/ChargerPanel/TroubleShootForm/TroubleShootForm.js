@@ -8,10 +8,9 @@ import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
-import FormControl from '@material-ui/core/FormControl';
 import { object, string } from 'yup';
 import axios from 'axios';
-import { useAuth } from '../../context/auth';
+import { useAuth } from '../../../context/auth';
 
 const useStyles = makeStyles(() => ({
   paper: {

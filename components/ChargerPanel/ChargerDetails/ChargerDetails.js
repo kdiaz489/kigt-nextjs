@@ -1,4 +1,3 @@
-import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -152,7 +151,7 @@ const ChargerDetails = ({ currentCharger }) => {
       </Box>
     ),
     7: (
-      <Paper className={classes.status}>
+      <Box className={classes.status}>
         <div>
           <ErrorIcon fontSize='large' className={classes.redStatus} />
         </div>
@@ -162,7 +161,7 @@ const ChargerDetails = ({ currentCharger }) => {
         <Typography align='center' variant='body2'>
           Code: 7
         </Typography>
-      </Paper>
+      </Box>
     ),
     8: (
       <Box className={classes.status}>
@@ -236,7 +235,7 @@ const ChargerDetails = ({ currentCharger }) => {
   return (
     <>
       <Typography variant='h5' gutterBottom>
-        ID: {currentCharger['id']}
+        ID: {currentCharger['chargerId']}
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12} md={4}>
@@ -245,8 +244,8 @@ const ChargerDetails = ({ currentCharger }) => {
               Health Status
             </Typography>
             <Box display='flex' justifyContent='center'>
-              {CHARGER_STATES[currentCharger['EVSE Status Code']] ? (
-                CHARGER_STATES[currentCharger['EVSE Status Code']]
+              {CHARGER_STATES[currentCharger.charger['EVSE Status Code']] ? (
+                CHARGER_STATES[currentCharger.charger['EVSE Status Code']]
               ) : (
                 <Box className={classes.status}>
                   <div>
@@ -269,7 +268,9 @@ const ChargerDetails = ({ currentCharger }) => {
               Payment Status
             </Typography>
             <Typography align='center' variant='h5' gutterBottom>
-              {currentCharger['EVSE Payment State'] === true ? 'True' : 'False'}
+              {currentCharger.charger['EVSE Payment State'] === true
+                ? 'True'
+                : 'False'}
             </Typography>
           </Paper>
         </Grid>
@@ -279,7 +280,7 @@ const ChargerDetails = ({ currentCharger }) => {
               Kiosk Interaction Monitor
             </Typography>
             <Typography align='center' variant='h5' gutterBottom>
-              {currentCharger['EVSE App Screen']}
+              {currentCharger.charger['EVSE App Screen']}
             </Typography>
           </Paper>
         </Grid>

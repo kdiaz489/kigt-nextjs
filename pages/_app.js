@@ -14,6 +14,7 @@ import { Router } from 'next/dist/client/router';
 import { AuthProvider } from '../context/auth';
 import { NavProvider } from '../context/nav';
 import { NotificationProvider } from '../context/notification';
+import { ChargersProvider } from '../context/chargers';
 import { SnackbarProvider } from 'notistack';
 config.autoAddCss = false;
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL;
@@ -109,11 +110,13 @@ export default class MyApp extends App {
               <Box marginTop={0}>
                 <AuthProvider>
                   <NavProvider>
-                    <SnackbarProvider>
-                      <NotificationProvider>
-                        <Component {...pageProps} />
-                      </NotificationProvider>
-                    </SnackbarProvider>
+                    <ChargersProvider>
+                      <SnackbarProvider>
+                        <NotificationProvider>
+                          <Component {...pageProps} />
+                        </NotificationProvider>
+                      </SnackbarProvider>
+                    </ChargersProvider>
                   </NavProvider>
                 </AuthProvider>
               </Box>

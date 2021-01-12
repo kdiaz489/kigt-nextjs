@@ -5,12 +5,11 @@ import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import ThrottleSelect from '../../ThrottleSelect';
 import axios from 'axios';
 import { Formik, Field, Form } from 'formik';
 import { object, number } from 'yup';
-import { MenuItem } from '@material-ui/core';
-import { useNotification } from '../../../context/notification';
+import NumberFormat from 'react-number-format';
+import { useNotification } from '../../../../context/notification';
 
 const useStyles = makeStyles((theme) => ({
   disabledUnderline: {
@@ -22,42 +21,83 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
   },
+
   textField: {
     textAlign: 'center',
   },
 }));
-
-const ThrottleAmount = ({ throttleAmount, chargerId }) => {
+const NumberFormatCustom = (props) => {
+  const { inputRef, onChange, InputProps, ...other } = props;
+  return (
+    <NumberFormat
+      {...other}
+      getInputRef={inputRef}
+      onValueChange={(values) => {
+        onChange({
+          target: {
+            name: props.name,
+            value: values.value,
+          },
+        });
+      }}
+      decimalScale={2}
+      fixedDecimalScale={true}
+      thousandSeparator={true}
+      prefix={'$'}
+    />
+  );
+};
+const TextFieldCustom = (props) => {
   const classes = useStyles();
-  const [editThrottle, setEditThrottle] = useState(false);
+  return (
+    <TextField
+      InputProps={{
+        classes: {
+          disabled: classes.disabledUnderline,
+          input: classes.textField,
+        },
+        inputComponent: NumberFormatCustom,
+      }}
+      {...props}
+    />
+  );
+};
+
+const TransAmount = ({ transAmount, chargerId }) => {
+  const classes = useStyles();
+  const [editTrans, setEditTrans] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useNotification();
 
   const toggleEdit = (e) => {
     e.preventDefault();
-    setEditThrottle((prevEditThrottle) => !prevEditThrottle);
+    setEditTrans((prevEditTrans) => !prevEditTrans);
   };
+
   const initialValues = {
-    'SERVER Set Current Max': throttleAmount,
+    'SERVER Set Transaction Amount': transAmount,
   };
   return (
     <>
       <Formik
         initialValues={initialValues}
         validationSchema={object({
-          'SERVER Set Current Max': number('Must be a valid value').required(
-            'Required',
-          ),
+          'SERVER Set Transaction Amount': number(
+            'Must be a valid value',
+          ).required('Required'),
         })}
         onSubmit={async (values, formikHelpers) => {
           try {
+            values['SERVER Set Transaction Amount'] = parseInt(
+              values['SERVER Set Transaction Amount'],
+            );
             let res = await axios.put(`/chargers/${chargerId}`, values);
-            setEditThrottle((prevVal) => !prevVal);
-            enqueueSnackbar('Successfully throttled charger.', {
+            setEditTrans((prevVal) => !prevVal);
+            enqueueSnackbar('Successfully updated transaction amount.', {
               variant: 'success',
             });
           } catch (error) {
             enqueueSnackbar(
-              'Error trying to throttle charger. Please try again.',
+              'Error updating transaction amount. Please try again.',
               {
                 variant: 'error',
               },
@@ -81,7 +121,9 @@ const ThrottleAmount = ({ throttleAmount, chargerId }) => {
                   alignItems='center'
                   justify='center'
                 >
-                  <Typography variant='body1'>Throttle</Typography>
+                  <Typography variant='body1' align='center'>
+                    Transaction Amount
+                  </Typography>
                 </Grid>
                 <Grid
                   container
@@ -91,34 +133,23 @@ const ThrottleAmount = ({ throttleAmount, chargerId }) => {
                   justify='center'
                 >
                   <Field
-                    name='SERVER Set Current Max'
-                    defaultValue={throttleAmount}
-                    as={TextField}
-                    select
-                    fullWidth
-                    disabled={!editThrottle}
-                    InputProps={{
-                      classes: {
-                        disabled: classes.disabledUnderline,
-                        input: classes.textField,
-                      },
-                    }}
+                    as={TextFieldCustom}
+                    name='SERVER Set Transaction Amount'
+                    margin='dense'
+                    size='small'
+                    number
+                    className={classes.textField}
+                    disabled={!editTrans}
                     helperText={
-                      touched['SERVER Set Current Max'] &&
-                      Boolean(errors['SERVER Set Current Max']) &&
-                      errors['SERVER Set Current Max']
+                      touched['SERVER Set Transaction Amount'] &&
+                      Boolean(errors['SERVER Set Transaction Amount']) &&
+                      errors['SERVER Set Transaction Amount']
                     }
                     error={
-                      touched['SERVER Set Current Max'] &&
-                      Boolean(errors['SERVER Set Current Max'])
+                      touched['SERVER Set Transaction Amount'] &&
+                      Boolean(errors['SERVER Set Transaction Amount'])
                     }
-                  >
-                    <MenuItem value={6}>6</MenuItem>
-                    <MenuItem value={12}>12</MenuItem>
-                    <MenuItem value={18}>18</MenuItem>
-                    <MenuItem value={24}>24</MenuItem>
-                    <MenuItem value={28}>28</MenuItem>
-                  </Field>
+                  />
                 </Grid>
                 <Grid
                   container
@@ -128,7 +159,7 @@ const ThrottleAmount = ({ throttleAmount, chargerId }) => {
                   alignItems='center'
                   justify='center'
                 >
-                  {editThrottle ? (
+                  {editTrans ? (
                     <>
                       <Grid item xs={6}>
                         <Button
@@ -165,4 +196,4 @@ const ThrottleAmount = ({ throttleAmount, chargerId }) => {
   );
 };
 
-export default ThrottleAmount;
+export default TransAmount;

@@ -8,17 +8,20 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import FormGroup from '@material-ui/core/FormGroup';
 import MenuItem from '@material-ui/core/MenuItem';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { Formik, Form, Field } from 'formik';
 import AddIcon from '@material-ui/icons/Add';
 import { useTheme } from '@material-ui/core/styles';
 import axios from 'axios';
 import { parseCookies } from 'nookies';
 import { mutate } from 'swr';
-import { useNotification } from '../../context/notification';
+import { useNotification } from '../../../context/notification';
 import { object, string } from 'yup';
 
 const AddChargerDialog = () => {
   const [open, setOpen] = useState(false);
+  let [multiCharger, setMultiCharger] = useState(false);
   const theme = useTheme();
   const { enqueueSnackbar, closeSnackbar } = useNotification();
 
@@ -39,6 +42,47 @@ const AddChargerDialog = () => {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleMultiCharger = (e) => {
+    setMultiCharger((prev) => !prev);
+  };
+
+  const handleSubmit = async (values, formikHelpers) => {
+    try {
+      let res = await axios.post('/chargers', values, {
+        headers: { authorization: `Bearer ${clientToken}` },
+      });
+      mutate(
+        ['/chargers', `Bearer ${clientToken} `],
+
+        async (data) => {
+          console.log('Data = ', data);
+          return {
+            chargers: [
+              {
+                ...values,
+                charger: {},
+              },
+              ...data.chargers,
+            ],
+          };
+        },
+        false,
+      );
+      enqueueSnackbar('Successfully added charger.', {
+        variant: 'success',
+      });
+      if (multiCharger) {
+        formikHelpers.resetForm();
+      } else {
+        setOpen(false);
+      }
+    } catch (error) {
+      enqueueSnackbar('Error adding charger. Please try again.', {
+        variant: 'error',
+      });
+    }
   };
 
   return (
@@ -66,45 +110,7 @@ const AddChargerDialog = () => {
             kioskId: string().required(),
             serialNumber: string().required(),
           })}
-          onSubmit={async (values, formikHelpers) => {
-            try {
-              let res = await axios.post('/chargers', values, {
-                headers: { authorization: `Bearer ${clientToken}` },
-              });
-              // mutate(
-              //   ['/chargers', `Bearer ${clientToken} `],
-
-              //   async (data) => {
-              //     return {
-              //       chargers: [
-              //         {
-              //           'EVSE App Screen': 'SwipeCardIM30',
-              //           'EVSE Max Current': '28',
-              //           'EVSE Payment State': false,
-              //           'EVSE Status Code': '255',
-              //           'EVSE Throttled?': true,
-              //           'SERVER Set Transaction Amount': 500,
-              //           'SERVER Pause EVSE?': false,
-              //           'SERVER Reset EVSE?': false,
-              //           'SERVER Set Current Max': 26,
-              //           'SERVER Update EVSE?': false,
-              //           id: values.chargerId,
-              //         },
-              //         ...data.chargers,
-              //       ],
-              //     };
-              //   },
-              //   false,
-              // );
-              enqueueSnackbar('Successfully added charger.', {
-                variant: 'success',
-              });
-            } catch (error) {
-              enqueueSnackbar('Error adding charger. Please try again.', {
-                variant: 'error',
-              });
-            }
-          }}
+          onSubmit={handleSubmit}
         >
           {({ values, errors, touched, isSubmitting, isValidating }) => (
             <Form>
@@ -214,6 +220,19 @@ const AddChargerDialog = () => {
                 </FormGroup>
               </DialogContent>
               <DialogActions>
+                <FormControlLabel
+                  style={{ position: 'absolute', left: '5%' }}
+                  control={
+                    <Checkbox
+                      checked={multiCharger}
+                      onChange={handleMultiCharger}
+                      inputProps={{
+                        'aria-label': 'add multiple chargers checkbox',
+                      }}
+                    />
+                  }
+                  label='Add Multiple Chargers'
+                />
                 <Button onClick={handleClose} color='secondary'>
                   Cancel
                 </Button>

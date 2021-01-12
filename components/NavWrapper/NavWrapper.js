@@ -1,8 +1,7 @@
 import React from 'react';
-
 import { makeStyles } from '@material-ui/core/styles';
-
 import Nav from '../Nav';
+import Head from 'next/head';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,14 +20,27 @@ const useStyles = makeStyles((theme) => ({
 const NavWrapper = ({ children }) => {
   const classes = useStyles();
   return (
-    <div className={classes.root}>
-      <Nav />
+    <>
+      <Head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if (!document.cookie.includes('token')) {
+                window.location.href = "/"
+              }
+            `,
+          }}
+        />
+      </Head>
+      <div className={classes.root}>
+        <Nav />
 
-      <main className={classes.content}>
-        <div className={classes.toolbar} />
-        {children}
-      </main>
-    </div>
+        <main className={classes.content}>
+          <div className={classes.toolbar} />
+          {children}
+        </main>
+      </div>
+    </>
   );
 };
 

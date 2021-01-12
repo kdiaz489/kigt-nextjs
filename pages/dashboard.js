@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import NavWrapper from '../components/NavWrapper';
 import { parseCookies } from 'nookies';
 import ChargerTable from '../components/ChargerTable';
@@ -7,29 +6,19 @@ import ChargerPanel from '../components/ChargerPanel';
 import AddCharger from '../components/AddCharger';
 import ChargerTableSkeleton from '../components/ChargerTableSkeleton';
 import DashboardHeader from '../components/DashboardHeader';
-import AddChargerDialog from '../components/AddChargerDialog';
+import AddChargerDialog from '../components/AddCharger/AddChargerDialog';
 import Grid from '@material-ui/core/Grid';
-import Head from 'next/head';
+import { useChargers } from '../context/chargers';
 
 const Dashboard = () => {
-  const [currentCharger, setCurrentCharger] = useState(null);
   let { token: authToken } = parseCookies();
   const { data } = useSWR(['/chargers', `Bearer ${authToken} `]);
+
+  const { currentCharger } = useChargers();
 
   if (!data) {
     return (
       <>
-        <Head>
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `
-              if (!document.cookie.includes('token')) {
-                window.location.href = "/"
-              }
-            `,
-            }}
-          />
-        </Head>
         <ChargerTableSkeleton />
       </>
     );
@@ -39,10 +28,7 @@ const Dashboard = () => {
       <>
         <Grid container spacing={3}>
           <Grid xs={8} item>
-            <DashboardHeader
-              setCurrentCharger={setCurrentCharger}
-              currentCharger={currentCharger}
-            />
+            <DashboardHeader />
           </Grid>
           <Grid justify='flex-end' xs={4} container item>
             <AddChargerDialog />
@@ -50,16 +36,10 @@ const Dashboard = () => {
         </Grid>
 
         {currentCharger ? (
-          <ChargerPanel
-            setCurrentCharger={setCurrentCharger}
-            currentCharger={currentCharger}
-          />
+          <ChargerPanel />
         ) : (
           <>
-            <ChargerTable
-              setCurrentCharger={setCurrentCharger}
-              data={data.chargers}
-            />
+            <ChargerTable data={data.chargers} />
           </>
         )}
       </>
@@ -67,11 +47,7 @@ const Dashboard = () => {
   }
   return (
     <>
-      <DashboardHeader
-        setCurrentCharger={setCurrentCharger}
-        currentCharger={currentCharger}
-      />
-
+      <DashboardHeader />
       <AddCharger />
     </>
   );
