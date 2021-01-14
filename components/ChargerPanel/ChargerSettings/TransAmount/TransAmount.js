@@ -10,6 +10,7 @@ import { Formik, Field, Form } from 'formik';
 import { object, number } from 'yup';
 import NumberFormat from 'react-number-format';
 import { useNotification } from '../../../../context/notification';
+import { useChargers } from '../../../../context/chargers';
 
 const useStyles = makeStyles((theme) => ({
   disabledUnderline: {
@@ -17,17 +18,13 @@ const useStyles = makeStyles((theme) => ({
       borderBottom: 'none',
     },
   },
-  center: {
-    display: 'flex',
-    justifyContent: 'center',
-  },
-
   textField: {
     textAlign: 'center',
   },
 }));
 const NumberFormatCustom = (props) => {
   const { inputRef, onChange, InputProps, ...other } = props;
+
   return (
     <NumberFormat
       {...other}
@@ -63,11 +60,13 @@ const TextFieldCustom = (props) => {
   );
 };
 
-const TransAmount = ({ transAmount, chargerId }) => {
+const TransAmount = (props) => {
   const classes = useStyles();
   const [editTrans, setEditTrans] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useNotification();
-
+  const { currentCharger } = useChargers();
+  const transAmount = currentCharger.charger['SERVER Set Transaction Amount'];
+  const chargerId = currentCharger.chargerId;
   const toggleEdit = (e) => {
     e.preventDefault();
     setEditTrans((prevEditTrans) => !prevEditTrans);

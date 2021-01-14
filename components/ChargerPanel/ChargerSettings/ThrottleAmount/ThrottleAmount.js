@@ -10,6 +10,7 @@ import { Formik, Field, Form } from 'formik';
 import { object, number } from 'yup';
 import { MenuItem } from '@material-ui/core';
 import { useNotification } from '../../../../context/notification';
+import { useChargers } from '../../../../context/chargers';
 
 const useStyles = makeStyles((theme) => ({
   disabledUnderline: {
@@ -17,19 +18,18 @@ const useStyles = makeStyles((theme) => ({
       borderBottom: 'none',
     },
   },
-  center: {
-    display: 'flex',
-    justifyContent: 'center',
-  },
   textField: {
     textAlign: 'center',
   },
 }));
 
-const ThrottleAmount = ({ throttleAmount, chargerId }) => {
+const ThrottleAmount = (props) => {
   const classes = useStyles();
   const [editThrottle, setEditThrottle] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useNotification();
+  const { currentCharger } = useChargers();
+  const throttleAmount = currentCharger.charger['SERVER Set Current Max'];
+  const chargerId = currentCharger.chargerId;
 
   const toggleEdit = (e) => {
     e.preventDefault();

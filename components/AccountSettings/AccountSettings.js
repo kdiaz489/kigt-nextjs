@@ -5,18 +5,13 @@ import { makeStyles } from '@material-ui/core/styles';
 import SettingField from './SettingField';
 import { string, email } from 'yup';
 import { useAuth } from '../../context/auth';
+import Grid from '@material-ui/core/Grid';
 
 const useStyles = makeStyles(() => ({
   paper: {
     padding: '2rem',
     width: '40rem',
     height: 'auto',
-  },
-  submitButton: {
-    color: 'white',
-  },
-  editButton: {
-    alignSelf: 'flex-end',
   },
 }));
 
@@ -26,31 +21,33 @@ const AccountSettings = () => {
   return (
     <Box display='flex' justifyContent='center'>
       <Paper className={classes.paper}>
-        <Typography variant='h5' gutterBottom>
-          General Account Settings
-        </Typography>
-        <Box mb={2}>
-          <SettingField
-            name={'displayName'}
-            title={'Name'}
-            validationSchema={{
-              displayName: string().required('Required'),
-            }}
-            initialValues={{ displayName: user?.displayName ?? 'None' }}
-          />
-        </Box>
-        <Box mb={2}>
-          <SettingField
-            name={'email'}
-            title={'Email'}
-            validationSchema={{
-              email: string()
-                .email('Valid email required')
-                .required('Required'),
-            }}
-            initialValues={{ email: user?.email ?? 'None' }}
-          />
-        </Box>
+        <Grid container spacing={3}>
+          <Typography variant='h5' gutterBottom>
+            General Account Settings
+          </Typography>
+          <Grid item xs={12}>
+            <SettingField
+              name={'displayName'}
+              title={'Name'}
+              validationSchema={{
+                displayName: string().required('Required'),
+              }}
+              initialValues={{ displayName: user?.displayName ?? 'None' }}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <SettingField
+              name={'email'}
+              title={'Email'}
+              validationSchema={{
+                email: string()
+                  .email('Valid email required')
+                  .required('Required'),
+              }}
+              initialValues={{ email: user?.email ?? 'None' }}
+            />
+          </Grid>
+        </Grid>
       </Paper>
     </Box>
   );

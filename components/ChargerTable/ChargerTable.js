@@ -9,7 +9,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import ChargerStatus from './ChargerStatus';
 import { useChargers } from '../../context/chargers';
-
+import { format } from 'date-fns';
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
@@ -44,6 +44,7 @@ const ChargerTable = ({ data }) => {
               hover
               onClick={(e) => handleRowClick(e, row)}
             >
+              {console.log(new Date(row['createdAt']?._seconds * 1000))}
               <TableCell component='th' scope='row'>
                 {row['chargerName'] ?? 'N/A'}
               </TableCell>
@@ -55,7 +56,14 @@ const ChargerTable = ({ data }) => {
               <TableCell align='right'>
                 {row['merchantName'] ?? 'N/A'}
               </TableCell>
-              <TableCell align='right'>{row['createdAt'] ?? 'N/A'}</TableCell>
+              <TableCell align='right'>
+                {row.createdAt
+                  ? format(
+                      row['createdAt']?._seconds * 1000,
+                      'MM/dd/yy hh:mm:ss',
+                    )
+                  : 'N/A'}
+              </TableCell>
               <TableCell align='right'>
                 {<ChargerStatus currentCharger={row['charger']} />}
               </TableCell>

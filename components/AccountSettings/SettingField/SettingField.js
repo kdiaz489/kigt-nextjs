@@ -19,10 +19,6 @@ const useStyles = makeStyles((theme) => ({
       borderBottom: 'none',
     },
   },
-  center: {
-    display: 'flex',
-    justifyContent: 'center',
-  },
   textField: {
     textAlign: 'center',
   },
