@@ -7,12 +7,12 @@ import { useChargers } from '../../../context/chargers';
 
 const ChargerSettings = (props) => {
   const { currentCharger } = useChargers();
-  const chargerId = currentCharger.chargerId;
+  const { kioskId } = currentCharger;
   return (
     <Box display='flex' justifyContent='center'>
       <Grid container spacing={3}>
         <Typography variant='h5' gutterBottom>
-          Settings for Terminal ID: {chargerId}
+          Settings for Terminal ID: {kioskId}
         </Typography>
 
         <Grid item xs={12}>

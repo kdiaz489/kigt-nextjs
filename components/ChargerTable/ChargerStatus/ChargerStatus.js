@@ -44,7 +44,7 @@ const ChargerStatus = ({ currentCharger }) => {
     9: <Chip label='Failed GFCI Self-Test' className={classes.redStatus} />,
     10: <Chip label='Over Temperature' className={classes.redStatus} />,
     254: <Chip label='Sleeping' className={classes.yellowStatus} />,
-    255: <Chip label='Disabled' className={classes.purpleStatus} />,
+    255: <Chip label='Standby' className={classes.purpleStatus} />,
   };
   return (
     <>

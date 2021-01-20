@@ -29,8 +29,8 @@ const ChargerTable = ({ data }) => {
         <TableHead>
           <TableRow>
             <TableCell>Name</TableCell>
-            <TableCell align='right'>Serial No.</TableCell>
-            <TableCell align='right'>Charger ID</TableCell>
+            <TableCell align='right'>SN</TableCell>
+            <TableCell align='right'>Kiosk ID</TableCell>
             <TableCell align='right'>Model</TableCell>
             <TableCell align='right'>Merchant</TableCell>
             <TableCell align='right'>Created Time</TableCell>
@@ -48,20 +48,15 @@ const ChargerTable = ({ data }) => {
               <TableCell component='th' scope='row'>
                 {row['chargerName'] ?? 'N/A'}
               </TableCell>
-              <TableCell align='right'>
-                {row['serialNumber'] ?? 'N/A'}
-              </TableCell>
-              <TableCell align='right'>{row['chargerId'] ?? 'N/A'}</TableCell>
+              <TableCell align='right'>{row['chargerSn'] ?? 'N/A'}</TableCell>
+              <TableCell align='right'>{row['kioskId'] ?? 'N/A'}</TableCell>
               <TableCell align='right'>{row['model'] ?? 'N/A'}</TableCell>
               <TableCell align='right'>
                 {row['merchantName'] ?? 'N/A'}
               </TableCell>
               <TableCell align='right'>
                 {row.createdAt
-                  ? format(
-                      row['createdAt']?._seconds * 1000,
-                      'MM/dd/yy hh:mm:ss',
-                    )
+                  ? format(row.createdAt?._seconds * 1000, 'MM/dd/yy hh:mm:ss')
                   : 'N/A'}
               </TableCell>
               <TableCell align='right'>
