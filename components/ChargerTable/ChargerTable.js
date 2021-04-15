@@ -1,4 +1,3 @@
-import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -42,9 +41,7 @@ const ChargerTable = ({ data }) => {
             <TableRow
               key={Math.random()}
               hover
-              onClick={(e) => handleRowClick(e, row)}
-            >
-              {console.log(new Date(row['createdAt']?._seconds * 1000))}
+              onClick={(e) => handleRowClick(e, row)}>
               <TableCell component='th' scope='row'>
                 {row['chargerName'] ?? 'N/A'}
               </TableCell>

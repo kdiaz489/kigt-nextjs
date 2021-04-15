@@ -2,7 +2,7 @@ import { Formik, Field, Form } from 'formik';
 import TextField from '@material-ui/core/TextField';
 import FormGroup from '@material-ui/core/FormGroup';
 import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
+import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
@@ -13,10 +13,11 @@ import axios from 'axios';
 import { useAuth } from '../../../context/auth';
 
 const useStyles = makeStyles(() => ({
-  paper: {
+  card: {
     padding: '2rem',
     width: '40rem',
     height: 'auto',
+    borderRadius: '16px',
   },
   submitButton: {
     color: 'white',
@@ -36,7 +37,7 @@ const TroubleShootForm = ({ currentCharger }) => {
 
   return (
     <Box display='flex' justifyContent='center'>
-      <Paper className={classes.paper}>
+      <Card className={classes.card}>
         <Typography variant='h5'>Need Help? Submit a Support Ticket</Typography>
         <Typography></Typography>
         <Formik
@@ -57,8 +58,7 @@ const TroubleShootForm = ({ currentCharger }) => {
             } catch (error) {
               console.log('Error submitting ticket to zendesk = ', error);
             }
-          }}
-        >
+          }}>
           {({ values, errors, touched, isSubmitting, isValidating }) => (
             <Form>
               <Box mb={2}>
@@ -88,8 +88,7 @@ const TroubleShootForm = ({ currentCharger }) => {
                     name='priority'
                     as={TextField}
                     select
-                    error={touched.priority && Boolean(errors.priority)}
-                  >
+                    error={touched.priority && Boolean(errors.priority)}>
                     <MenuItem value={'low'}>Low</MenuItem>
                     <MenuItem value={'normal'}>Normal</MenuItem>
                     <MenuItem value={'high'}>High</MenuItem>
@@ -125,14 +124,13 @@ const TroubleShootForm = ({ currentCharger }) => {
                 variant='contained'
                 color='primary'
                 className={classes.submitButton}
-                disabled={isSubmitting || isValidating}
-              >
+                disabled={isSubmitting || isValidating}>
                 Submit Ticket
               </Button>
             </Form>
           )}
         </Formik>
-      </Paper>
+      </Card>
     </Box>
   );
 };

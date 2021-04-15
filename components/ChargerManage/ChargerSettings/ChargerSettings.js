@@ -4,16 +4,15 @@ import Grid from '@material-ui/core/Grid';
 import TransAmount from './TransAmount';
 import ThrottleAmount from './ThrottleAmount';
 import { useChargers } from '../../../context/chargers';
+import MyCard from '../../common/MyCard';
 
 const ChargerSettings = (props) => {
   const { currentCharger } = useChargers();
   const { kioskId } = currentCharger;
   return (
-    <Box display='flex' justifyContent='center'>
+    <MyCard title={`Settings`} type='text' align='center'>
       <Grid container spacing={3}>
-        <Typography variant='h5' gutterBottom>
-          Settings for Terminal ID: {kioskId}
-        </Typography>
+        <Typography variant='h5' gutterBottom></Typography>
 
         <Grid item xs={12}>
           <TransAmount />
@@ -22,7 +21,7 @@ const ChargerSettings = (props) => {
           <ThrottleAmount />
         </Grid>
       </Grid>
-    </Box>
+    </MyCard>
   );
 };
 

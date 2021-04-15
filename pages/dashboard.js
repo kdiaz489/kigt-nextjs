@@ -2,12 +2,10 @@ import NavWrapper from '../components/NavWrapper';
 import { parseCookies } from 'nookies';
 import ChargerTable from '../components/ChargerTable';
 import useSWR from 'swr';
-import ChargerPanel from '../components/ChargerPanel';
+import ChargerManage from '../components/ChargerManage';
 import AddCharger from '../components/AddCharger';
 import ChargerTableSkeleton from '../components/ChargerTableSkeleton';
 import DashboardHeader from '../components/DashboardHeader';
-import AddChargerDialog from '../components/AddCharger/AddChargerDialog';
-import Grid from '@material-ui/core/Grid';
 import { useChargers } from '../context/chargers';
 
 const Dashboard = () => {
@@ -16,36 +14,26 @@ const Dashboard = () => {
 
   const { currentCharger } = useChargers();
 
-  console.log(data);
+  // If data is undefined
   if (!data) {
-    return (
-      <>
-        <ChargerTableSkeleton />
-      </>
-    );
+    return <ChargerTableSkeleton />;
   }
+
+  // If data is truthy (not 0, null, undefined, etc)
   if (data.chargers.length) {
     return (
       <>
-        <Grid container spacing={3}>
-          <Grid xs={8} item>
-            <DashboardHeader />
-          </Grid>
-          <Grid justify='flex-end' xs={4} container item>
-            <AddChargerDialog />
-          </Grid>
-        </Grid>
+        <DashboardHeader />
 
         {currentCharger ? (
-          <ChargerPanel />
+          <ChargerManage />
         ) : (
-          <>
-            <ChargerTable data={data.chargers} />
-          </>
+          <ChargerTable data={data.chargers} />
         )}
       </>
     );
   }
+
   return (
     <>
       <DashboardHeader />

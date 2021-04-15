@@ -40,8 +40,11 @@ Router.events.on('routeChangeError', () => {
 export const theme = createMuiTheme({
   typography: {
     fontFamily: ['Monstserrat', 'Helvetica Neue', 'Arial', 'sans-serif'].join(
-      ',',
+      ','
     ),
+    button: {
+      textTransform: 'none',
+    },
   },
   palette: {
     primary: { main: '#02b42a' },
@@ -51,6 +54,11 @@ export const theme = createMuiTheme({
     secondary: { main: '#37363A' },
   },
   overrides: {
+    MuiTabs: {
+      indicator: {
+        backgroundColor: '#02b42a',
+      },
+    },
     MuiButton: {
       root: {
         borderRadius: 2,
@@ -104,8 +112,7 @@ export default class MyApp extends App {
                     authorization: headerValue,
                   },
                 }).then((r) => r.data),
-            }}
-          >
+            }}>
             <Container disableGutters maxWidth={false}>
               <Box marginTop={0}>
                 <AuthProvider>
