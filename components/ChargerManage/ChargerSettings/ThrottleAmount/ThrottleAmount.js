@@ -44,13 +44,11 @@ const ThrottleAmount = (props) => {
         initialValues={initialValues}
         validationSchema={object({
           'SERVER Set Current Max': number('Must be a valid value').required(
-            'Required',
+            'Required'
           ),
         })}
         onSubmit={async (values, formikHelpers) => {
           try {
-            console.log('test');
-            console.log(kioskId);
             let res = await axios.put(`/chargers/${kioskId}`, values);
             setEditThrottle((prevVal) => !prevVal);
             enqueueSnackbar('Successfully throttled charger.', {
@@ -61,27 +59,24 @@ const ThrottleAmount = (props) => {
               'Error trying to throttle charger. Please try again.',
               {
                 variant: 'error',
-              },
+              }
             );
           }
-        }}
-      >
+        }}>
         {({ values, errors, touched, isSubmitting, isValidating }) => (
           <Form>
             <Box
               border={1}
               style={{ padding: '5px' }}
               borderColor='grey.400'
-              borderRadius='borderRadius'
-            >
+              borderRadius='borderRadius'>
               <Grid container spacing={2}>
                 <Grid
                   container
                   item
                   xs={4}
                   alignItems='center'
-                  justify='center'
-                >
+                  justify='center'>
                   <Typography variant='body1'>Throttle</Typography>
                 </Grid>
                 <Grid
@@ -89,8 +84,7 @@ const ThrottleAmount = (props) => {
                   item
                   xs={4}
                   alignItems='center'
-                  justify='center'
-                >
+                  justify='center'>
                   <Field
                     name='SERVER Set Current Max'
                     defaultValue={throttleAmount}
@@ -112,8 +106,7 @@ const ThrottleAmount = (props) => {
                     error={
                       touched['SERVER Set Current Max'] &&
                       Boolean(errors['SERVER Set Current Max'])
-                    }
-                  >
+                    }>
                     <MenuItem value={6}>6A</MenuItem>
                     <MenuItem value={12}>12A</MenuItem>
                     <MenuItem value={18}>18A</MenuItem>
@@ -127,8 +120,7 @@ const ThrottleAmount = (props) => {
                   xs={4}
                   className={classes.gridItemSize}
                   alignItems='center'
-                  justify='center'
-                >
+                  justify='center'>
                   {editThrottle ? (
                     <>
                       <Grid item xs={6}>
@@ -136,8 +128,7 @@ const ThrottleAmount = (props) => {
                           type='submit'
                           color='primary'
                           size='small'
-                          disabled={isSubmitting}
-                        >
+                          disabled={isSubmitting}>
                           Update
                         </Button>
                       </Grid>
@@ -145,8 +136,7 @@ const ThrottleAmount = (props) => {
                         <Button
                           color='secondary'
                           size='small'
-                          onClick={toggleEdit}
-                        >
+                          onClick={toggleEdit}>
                           Cancel
                         </Button>
                       </Grid>
@@ -158,8 +148,7 @@ const ThrottleAmount = (props) => {
                       }
                       color='primary'
                       size='small'
-                      onClick={toggleEdit}
-                    >
+                      onClick={toggleEdit}>
                       Edit
                     </Button>
                   )}

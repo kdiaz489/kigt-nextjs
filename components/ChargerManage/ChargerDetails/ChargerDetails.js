@@ -1,4 +1,6 @@
-import Paper from '@material-ui/core/Paper';
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -9,13 +11,22 @@ import HelpIcon from '@material-ui/icons/Help';
 import ErrorIcon from '@material-ui/icons/Error';
 import BatteryChargingFullIcon from '@material-ui/icons/BatteryChargingFull';
 import PowerOffIcon from '@material-ui/icons/PowerOff';
+import CurrentGraph from './CurrentGraph';
+import TemperatureGraph from './TemperatureGraph';
+import PaymentGraph from './PaymentGraph';
+import Divider from '@material-ui/core/Divider';
+
 const useStyles = makeStyles((theme) => ({
-  paper: {
-    padding: '12px',
-    height: theme.spacing(25),
+  card: {
+    height: '100%',
     width: 'auto',
+    borderRadius: '16px',
+  },
+
+  cardContent: {
+    minHeight: theme.spacing(15),
     display: 'flex',
-    flexDirection: 'column',
+    alignItems: 'center',
     justifyContent: 'center',
   },
 
@@ -58,11 +69,9 @@ const ChargerDetails = ({ currentCharger }) => {
   const CHARGER_STATES = {
     0: (
       <Box className={classes.status}>
-        <div>
-          <HelpIcon fontSize='large' className={classes.greyStatus} />
-        </div>
+        <HelpIcon fontSize='large' className={classes.greyStatus} />
         <Typography align='center' variant='h5'>
-          Unknown State
+          Unknown Stateee
         </Typography>
         <Typography align='center' variant='body2'>
           Code: Unknown
@@ -71,9 +80,7 @@ const ChargerDetails = ({ currentCharger }) => {
     ),
     1: (
       <Box className={classes.status}>
-        <div>
-          <CheckCircleIcon fontSize='large' className={classes.greenStatus} />
-        </div>
+        <CheckCircleIcon fontSize='large' className={classes.greenStatus} />
         <Typography align='center' variant='h5'>
           Not Connected
         </Typography>
@@ -84,9 +91,7 @@ const ChargerDetails = ({ currentCharger }) => {
     ),
     2: (
       <Box className={classes.status}>
-        <div>
-          <WarningIcon fontSize='large' className={classes.yellowStatus} />
-        </div>
+        <WarningIcon fontSize='large' className={classes.yellowStatus} />
         <Typography align='center' variant='h5'>
           Ready to Charge
         </Typography>
@@ -97,12 +102,10 @@ const ChargerDetails = ({ currentCharger }) => {
     ),
     3: (
       <Box className={classes.status}>
-        <div>
-          <BatteryChargingFullIcon
-            fontSize='large'
-            className={classes.blueStatus}
-          />
-        </div>
+        <BatteryChargingFullIcon
+          fontSize='large'
+          className={classes.blueStatus}
+        />
         <Typography align='center' variant='h5'>
           Charging
         </Typography>
@@ -113,9 +116,7 @@ const ChargerDetails = ({ currentCharger }) => {
     ),
     4: (
       <Box className={classes.status}>
-        <div>
-          <ErrorIcon fontSize='large' className={classes.redStatus} />
-        </div>
+        <ErrorIcon fontSize='large' className={classes.redStatus} />
         <Typography align='center' variant='h5'>
           Vent Required
         </Typography>
@@ -126,9 +127,7 @@ const ChargerDetails = ({ currentCharger }) => {
     ),
     5: (
       <Box className={classes.status}>
-        <div>
-          <ErrorIcon fontSize='large' className={classes.redStatus} />
-        </div>
+        <ErrorIcon fontSize='large' className={classes.redStatus} />
         <Typography align='center' variant='h5'>
           Diode Check Failed
         </Typography>
@@ -139,9 +138,7 @@ const ChargerDetails = ({ currentCharger }) => {
     ),
     6: (
       <Box className={classes.status}>
-        <div>
-          <ErrorIcon fontSize='large' className={classes.redStatus} />
-        </div>
+        <ErrorIcon fontSize='large' className={classes.redStatus} />
         <Typography align='center' variant='h5'>
           GFCI Fault
         </Typography>
@@ -152,9 +149,7 @@ const ChargerDetails = ({ currentCharger }) => {
     ),
     7: (
       <Box className={classes.status}>
-        <div>
-          <ErrorIcon fontSize='large' className={classes.redStatus} />
-        </div>
+        <ErrorIcon fontSize='large' className={classes.redStatus} />
         <Typography align='center' variant='h5'>
           Bad Ground
         </Typography>
@@ -165,9 +160,7 @@ const ChargerDetails = ({ currentCharger }) => {
     ),
     8: (
       <Box className={classes.status}>
-        <div>
-          <ErrorIcon fontSize='large' className={classes.redStatus} />
-        </div>
+        <ErrorIcon fontSize='large' className={classes.redStatus} />
         <Typography align='center' variant='h5'>
           Stuck Relay
         </Typography>
@@ -178,9 +171,7 @@ const ChargerDetails = ({ currentCharger }) => {
     ),
     9: (
       <Box className={classes.status}>
-        <div>
-          <ErrorIcon fontSize='large' className={classes.redStatus} />
-        </div>
+        <ErrorIcon fontSize='large' className={classes.redStatus} />
         <Typography align='center' variant='h5'>
           Failed GFCI Self-Test
         </Typography>
@@ -191,9 +182,7 @@ const ChargerDetails = ({ currentCharger }) => {
     ),
     10: (
       <Box className={classes.status}>
-        <div>
-          <ErrorIcon fontSize='large' className={classes.redStatus} />
-        </div>
+        <ErrorIcon fontSize='large' className={classes.redStatus} />
         <Typography align='center' variant='h5'>
           Over Temperature
         </Typography>
@@ -204,9 +193,7 @@ const ChargerDetails = ({ currentCharger }) => {
     ),
     254: (
       <Box className={classes.status}>
-        <div>
-          <PowerOffIcon fontSize='large' className={classes.yellowStatus} />
-        </div>
+        <PowerOffIcon fontSize='large' className={classes.yellowStatus} />
         <Typography align='center' variant='h5'>
           Sleeping
         </Typography>
@@ -217,9 +204,7 @@ const ChargerDetails = ({ currentCharger }) => {
     ),
     255: (
       <Box className={classes.status}>
-        <div>
-          <CheckCircleIcon fontSize='large' className={classes.purpleStatus} />
-        </div>
+        <CheckCircleIcon fontSize='large' className={classes.purpleStatus} />
         <div>
           <Typography align='center' variant='h5'>
             Standby
@@ -235,54 +220,76 @@ const ChargerDetails = ({ currentCharger }) => {
   return (
     <>
       <Typography variant='h5' gutterBottom>
-        ID: {currentCharger.kioskId}
+        Terminal ID: {currentCharger.kioskId}
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12} md={4}>
-          <Paper className={classes.paper}>
-            <Typography align='center' variant='body1' gutterBottom>
-              Health Status
-            </Typography>
-            <Box display='flex' justifyContent='center'>
-              {CHARGER_STATES[currentCharger.charger['EVSE Status Code']] ? (
-                CHARGER_STATES[currentCharger.charger['EVSE Status Code']]
-              ) : (
-                <Box className={classes.status}>
-                  <div>
+          <Card className={classes.card} variant='outlined'>
+            <CardHeader
+              title='Health Status'
+              align='center'
+              variant='body1'
+              gutterBottom
+            />
+            <Divider />
+            <CardContent>
+              <div className={classes.cardContent}>
+                {currentCharger.charger['EVSE Status Code'] ? (
+                  CHARGER_STATES[currentCharger.charger['EVSE Status Code']]
+                ) : (
+                  <Box className={classes.status}>
                     <HelpIcon fontSize='large' className={classes.greyStatus} />
-                  </div>
-                  <Typography align='center' variant='h5'>
-                    Unknown State
-                  </Typography>
-                  <Typography align='center' variant='body2'>
-                    Code: Unknown
-                  </Typography>
-                </Box>
-              )}
-            </Box>
-          </Paper>
+                    <Typography align='center' variant='h5'>
+                      Unknown State
+                    </Typography>
+                    <Typography align='center' variant='body2'>
+                      Code: Unknown
+                    </Typography>
+                  </Box>
+                )}
+              </div>
+            </CardContent>
+          </Card>
         </Grid>
         <Grid item xs={12} md={4}>
-          <Paper className={classes.paper}>
-            <Typography align='center' variant='body1' gutterBottom>
-              Payment Status
-            </Typography>
-            <Typography align='center' variant='h5' gutterBottom>
-              {currentCharger.charger['EVSE Payment State'] === true
-                ? 'True'
-                : 'False'}
-            </Typography>
-          </Paper>
+          <Card className={classes.card} variant='outlined'>
+            <CardHeader title='Payment Status' align='center' variant='body1' />
+            <Divider />
+            <CardContent>
+              <div className={classes.cardContent}>
+                <Typography align='center' variant='h5' gutterBottom>
+                  {currentCharger.charger['EVSE Payment State'] === true
+                    ? 'True'
+                    : 'False'}
+                </Typography>
+              </div>
+            </CardContent>
+          </Card>
         </Grid>
         <Grid item xs={12} md={4}>
-          <Paper className={classes.paper}>
-            <Typography align='center' variant='body1' gutterBottom>
-              Kiosk Interaction Monitor
-            </Typography>
-            <Typography align='center' variant='h5' gutterBottom>
-              {currentCharger.charger['EVSE App Screen']}
-            </Typography>
-          </Paper>
+          <Card className={classes.card} variant='outlined'>
+            <CardHeader title='Kiosk Monitor' align='center' variant='body1' />
+            <Divider />
+            <CardContent>
+              <div className={classes.cardContent}>
+                <Typography align='center' variant='h5' gutterBottom>
+                  {currentCharger.charger['EVSE App Screen']}
+                </Typography>
+              </div>
+            </CardContent>
+          </Card>
+        </Grid>
+        {/* Start of Current Graph */}
+        <Grid item xs={12} md={6}>
+          <CurrentGraph />
+        </Grid>
+        {/* Start of Temperature Graph */}
+        <Grid item xs={12} md={6}>
+          <TemperatureGraph />
+        </Grid>
+        {/* Start of Payment Status Graph */}
+        <Grid item xs={12}>
+          <PaymentGraph />
         </Grid>
       </Grid>
     </>

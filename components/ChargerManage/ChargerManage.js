@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
+import Paper from '@material-ui/core/Paper';
 import ChargerDetails from './ChargerDetails';
 import ChargerSettings from './ChargerSettings';
 import TroubleShootForm from './TroubleShootForm';
@@ -19,8 +19,7 @@ function TabPanel(props) {
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
+      {...other}>
       {value === index && <Box p={3}>{children}</Box>}
     </div>
   );
@@ -40,21 +39,23 @@ function a11yProps(index) {
 }
 
 const useStyles = makeStyles((theme) => ({
-  root: {
+  paper: {
     flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: 'transparent',
     marginBottom: '10%',
   },
-  tab: {
-    color: 'white',
+
+  tabBackground: {
+    backgroundColor: 'transparent',
+    borderBottom: '1px solid #e8e8e8',
   },
-  tabBackground: { backgroundColor: theme.palette.secondary.light },
-  indicator: {
-    backgroundColor: 'white',
+  font: {
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
   },
 }));
 
-export default function ChargerPanel(props) {
+export default function ChargerManage(props) {
   const classes = useStyles();
   const [value, setValue] = useState(0);
   const { currentCharger, setCurrentCharger } = useChargers();
@@ -65,28 +66,35 @@ export default function ChargerPanel(props) {
 
   return (
     <>
-      <div className={classes.root}>
-        <AppBar position='static'>
-          <Tabs
-            classes={{
-              root: classes.tabBackground,
-              indicator: classes.indicator,
-            }}
-            value={value}
-            onChange={handleChange}
-            aria-label='charger tabs'
-          >
-            <Tab className={classes.tab} label='Details' {...a11yProps(0)} />
-            <Tab className={classes.tab} label='Settings' {...a11yProps(1)} />
-          </Tabs>
-        </AppBar>
+      <Paper className={classes.paper} elevation={0}>
+        <Tabs
+          classes={{
+            root: classes.tabBackground,
+          }}
+          centered
+          textColor='primary'
+          value={value}
+          onChange={handleChange}
+          aria-label='charger tabs'>
+          <Tab
+            label='Details'
+            classes={{ root: classes.font }}
+            {...a11yProps(0)}
+          />
+          <Tab
+            label='Settings'
+            classes={{ root: classes.font }}
+            {...a11yProps(1)}
+          />
+        </Tabs>
+
         <TabPanel value={value} index={0}>
           <ChargerDetails currentCharger={currentCharger} />
         </TabPanel>
         <TabPanel value={value} index={1}>
           <ChargerSettings currentCharger={currentCharger} />
         </TabPanel>
-      </div>
+      </Paper>
       <TroubleShootForm currentCharger={currentCharger} />
     </>
   );

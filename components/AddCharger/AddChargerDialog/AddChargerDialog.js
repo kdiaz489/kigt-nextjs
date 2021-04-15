@@ -18,8 +18,21 @@ import { parseCookies } from 'nookies';
 import { mutate } from 'swr';
 import { useNotification } from '../../../context/notification';
 import { object, string } from 'yup';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+  button: {
+    margin: theme.spacing(1),
+    borderRadius: '5em',
+    color: 'white',
+  },
+  input: {
+    display: 'none',
+  },
+}));
 
 const AddChargerDialog = () => {
+  const classes = useStyles();
   const [open, setOpen] = useState(false);
   let [multiCharger, setMultiCharger] = useState(false);
   const theme = useTheme();
@@ -56,20 +69,7 @@ const AddChargerDialog = () => {
       mutate(
         ['/chargers', `Bearer ${clientToken} `],
 
-        async (data) => {
-          console.log('Data = ', data);
-          console.log('Values = ', values);
-          return {
-            chargers: [
-              {
-                ...values,
-                charger: {},
-              },
-              ...data.chargers,
-            ],
-          };
-        },
-        false,
+        false
       );
       enqueueSnackbar('Successfully added charger.', {
         variant: 'success',
@@ -90,16 +90,16 @@ const AddChargerDialog = () => {
     <>
       <Button
         startIcon={<AddIcon />}
+        variant='contained'
         onClick={handleClickOpen}
-        style={{ color: theme.palette.grey[500] }}
-      >
+        color='secondary'
+        className={classes.button}>
         Add Charger
       </Button>
       <Dialog
         open={open}
         onClose={handleClose}
-        aria-labelledby='form-dialog-title'
-      >
+        aria-labelledby='form-dialog-title'>
         <DialogTitle id='form-dialog-title'>Add charger</DialogTitle>
         <Formik
           initialValues={initialValues}
@@ -111,8 +111,7 @@ const AddChargerDialog = () => {
             modelSn: string().required(),
             chargerSn: string().required(),
           })}
-          onSubmit={handleSubmit}
-        >
+          onSubmit={handleSubmit}>
           {({ values, errors, touched, isSubmitting, isValidating }) => (
             <Form>
               <DialogContent>
@@ -178,8 +177,7 @@ const AddChargerDialog = () => {
                     helperText={
                       touched.model && Boolean(errors.model) && 'Required'
                     }
-                    error={touched.model && Boolean(errors.model)}
-                  >
+                    error={touched.model && Boolean(errors.model)}>
                     <MenuItem value={'IM30'}>IM30</MenuItem>
                   </Field>
                 </FormGroup>

@@ -128,8 +128,7 @@ const Nav = (props) => {
             <ListItem
               selected={pathname === '/dashboard'}
               button
-              classes={{ root: classes.listItem, selected: classes.selected }}
-            >
+              classes={{ root: classes.listItem, selected: classes.selected }}>
               <ListItemText
                 primary={'Home'}
                 classes={{ primary: classes.listItemText }}
@@ -142,8 +141,7 @@ const Nav = (props) => {
               button
               className={classes.listItem}
               selected={pathname === '/account'}
-              classes={{ root: classes.listItem, selected: classes.selected }}
-            >
+              classes={{ root: classes.listItem, selected: classes.selected }}>
               <ListItemText
                 primary={'Account'}
                 classes={{ primary: classes.listItemText }}
@@ -171,8 +169,7 @@ const Nav = (props) => {
               await firebaseClient.auth().signOut();
               router.push('/', undefined, { shallow: true });
             }}
-            className={classes.listItem}
-          >
+            className={classes.listItem}>
             <ListItemText
               primary={'Sign Out'}
               classes={{ primary: classes.listItemText }}
@@ -189,16 +186,14 @@ const Nav = (props) => {
       <AppBar
         position='fixed'
         className={classes.appBar}
-        classes={{ colorPrimary: classes.appBarColor }}
-      >
+        classes={{ colorPrimary: classes.appBarColor }}>
         <Toolbar variant='dense'>
           <IconButton
             color='inherit'
             aria-label='open drawer'
             onClick={toggleOpen}
             edge='start'
-            className={classes.menuButton}
-          >
+            className={classes.menuButton}>
             <MenuIcon />
           </IconButton>
         </Toolbar>
@@ -215,8 +210,7 @@ const Nav = (props) => {
             ModalProps={{
               keepMounted: true, // Better open performance on mobile.
             }}
-            className={classes.drawer}
-          >
+            className={classes.drawer}>
             {drawerContent}
           </Drawer>
         </Hidden>
@@ -226,8 +220,7 @@ const Nav = (props) => {
               paper: classes.drawerPaper,
             }}
             variant='permanent'
-            open
-          >
+            open>
             {drawerContent}
           </Drawer>
         </Hidden>

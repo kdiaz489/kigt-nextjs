@@ -20,7 +20,8 @@ export function AuthProvider({ children }) {
       }
       console.log('Updating Token');
       const token = await user.getIdToken();
-      setUser(user);
+      let formattedUser = formatUser(user);
+      setUser(formattedUser);
       nookies.destroy(null, 'token');
       nookies.set(null, 'token', token, {});
     });
@@ -38,6 +39,17 @@ export function AuthProvider({ children }) {
     <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>
   );
 }
+
+// Pulls out necessary info from user and formats
+const formatUser = (user) => {
+  return {
+    uid: user.uid,
+    email: user.email,
+    token: user.ya,
+    displayName: user.displayName,
+    photoUrl: user.photoURL,
+  };
+};
 
 export const useAuth = () => {
   return useContext(AuthContext);
