@@ -29,7 +29,7 @@ const ThrottleAmount = (props) => {
   const { enqueueSnackbar, closeSnackbar } = useNotification();
   const { currentCharger } = useChargers();
   const throttleAmount = currentCharger.charger['SERVER Set Current Max'];
-  const chargerId = currentCharger.chargerId;
+  const { kioskId } = currentCharger;
 
   const toggleEdit = (e) => {
     e.preventDefault();
@@ -49,7 +49,9 @@ const ThrottleAmount = (props) => {
         })}
         onSubmit={async (values, formikHelpers) => {
           try {
-            let res = await axios.put(`/chargers/${chargerId}`, values);
+            console.log('test');
+            console.log(kioskId);
+            let res = await axios.put(`/chargers/${kioskId}`, values);
             setEditThrottle((prevVal) => !prevVal);
             enqueueSnackbar('Successfully throttled charger.', {
               variant: 'success',
@@ -150,7 +152,14 @@ const ThrottleAmount = (props) => {
                       </Grid>
                     </>
                   ) : (
-                    <Button color='primary' size='small' onClick={toggleEdit}>
+                    <Button
+                      disabled={
+                        Object.keys(currentCharger.charger).length === 0
+                      }
+                      color='primary'
+                      size='small'
+                      onClick={toggleEdit}
+                    >
                       Edit
                     </Button>
                   )}

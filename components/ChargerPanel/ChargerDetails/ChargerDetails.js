@@ -222,7 +222,7 @@ const ChargerDetails = ({ currentCharger }) => {
         </div>
         <div>
           <Typography align='center' variant='h5'>
-            Disabled
+            Standby
           </Typography>
           <Typography align='center' variant='body2'>
             Code: 255
@@ -235,7 +235,7 @@ const ChargerDetails = ({ currentCharger }) => {
   return (
     <>
       <Typography variant='h5' gutterBottom>
-        ID: {currentCharger['chargerId']}
+        ID: {currentCharger.kioskId}
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12} md={4}>

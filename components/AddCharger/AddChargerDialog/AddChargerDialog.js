@@ -26,12 +26,12 @@ const AddChargerDialog = () => {
   const { enqueueSnackbar, closeSnackbar } = useNotification();
 
   const initialValues = {
-    chargerId: '',
+    kioskId: '',
     chargerName: '',
     merchantName: '',
     model: '',
-    kioskId: '',
-    serialNumber: '',
+    modelSn: '',
+    chargerSn: '',
   };
 
   const { token: clientToken } = parseCookies();
@@ -58,6 +58,7 @@ const AddChargerDialog = () => {
 
         async (data) => {
           console.log('Data = ', data);
+          console.log('Values = ', values);
           return {
             chargers: [
               {
@@ -103,12 +104,12 @@ const AddChargerDialog = () => {
         <Formik
           initialValues={initialValues}
           validationSchema={object({
-            chargerId: string().required(),
+            kioskId: string().required(),
             chargerName: string().required(),
             merchantName: string().required(),
             model: string().required().oneOf(['IM30']),
-            kioskId: string().required(),
-            serialNumber: string().required(),
+            modelSn: string().required(),
+            chargerSn: string().required(),
           })}
           onSubmit={handleSubmit}
         >
@@ -122,17 +123,15 @@ const AddChargerDialog = () => {
                   <Field
                     as={TextField}
                     autoFocus
-                    name='chargerId'
+                    name='kioskId'
                     margin='dense'
-                    id='chargerId'
-                    label='Charger ID'
+                    id='kioskId'
+                    label='Kiosk ID'
                     fullWidth
                     helperText={
-                      touched.chargerId &&
-                      Boolean(errors.chargerId) &&
-                      'Charger Id is required'
+                      touched.kioskId && Boolean(errors.kioskId) && 'Required'
                     }
-                    error={touched.chargerId && Boolean(errors.chargerId)}
+                    error={touched.kioskId && Boolean(errors.kioskId)}
                   />
                 </FormGroup>
                 <FormGroup>
@@ -146,7 +145,7 @@ const AddChargerDialog = () => {
                     helperText={
                       touched.chargerName &&
                       Boolean(errors.chargerName) &&
-                      'Charger Name is required'
+                      'Required'
                     }
                     error={touched.chargerName && Boolean(errors.chargerName)}
                   />
@@ -162,7 +161,7 @@ const AddChargerDialog = () => {
                     helperText={
                       touched.merchantName &&
                       Boolean(errors.merchantName) &&
-                      'Merchant name is required'
+                      'Required'
                     }
                     error={touched.merchantName && Boolean(errors.merchantName)}
                   />
@@ -177,9 +176,7 @@ const AddChargerDialog = () => {
                     fullWidth
                     select
                     helperText={
-                      touched.model &&
-                      Boolean(errors.model) &&
-                      'Model is required'
+                      touched.model && Boolean(errors.model) && 'Required'
                     }
                     error={touched.model && Boolean(errors.model)}
                   >
@@ -189,33 +186,31 @@ const AddChargerDialog = () => {
                 <FormGroup>
                   <Field
                     as={TextField}
-                    name='kioskId'
+                    name='modelSn'
                     margin='dense'
-                    id='kioskId'
-                    label='Kiosk Id'
+                    id='modelSn'
+                    label='Model SN'
                     fullWidth
                     helperText={
-                      touched.kioskId &&
-                      Boolean(errors.kioskId) &&
-                      'Kiosk Id is required'
+                      touched.modelSn && Boolean(errors.modelSn) && 'Required'
                     }
-                    error={touched.kioskId && Boolean(errors.kioskId)}
+                    error={touched.modelSn && Boolean(errors.modelSn)}
                   />
                 </FormGroup>
                 <FormGroup>
                   <Field
                     as={TextField}
-                    name='serialNumber'
+                    name='chargerSn'
                     margin='dense'
-                    id='serialNumber'
-                    label='Serial Number'
+                    id='chargerSn'
+                    label='Charger SN'
                     fullWidth
                     helperText={
-                      touched.serialNumber &&
-                      Boolean(errors.serialNumber) &&
-                      'Serial number is required'
+                      touched.chargerSn &&
+                      Boolean(errors.chargerSn) &&
+                      'Required'
                     }
-                    error={touched.serialNumber && Boolean(errors.serialNumber)}
+                    error={touched.chargerSn && Boolean(errors.chargerSn)}
                   />
                 </FormGroup>
               </DialogContent>

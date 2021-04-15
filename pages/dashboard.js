@@ -16,6 +16,7 @@ const Dashboard = () => {
 
   const { currentCharger } = useChargers();
 
+  console.log(data);
   if (!data) {
     return (
       <>

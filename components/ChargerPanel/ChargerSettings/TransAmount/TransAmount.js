@@ -66,14 +66,14 @@ const TransAmount = (props) => {
   const { enqueueSnackbar, closeSnackbar } = useNotification();
   const { currentCharger } = useChargers();
   const transAmount = currentCharger.charger['SERVER Set Transaction Amount'];
-  const chargerId = currentCharger.chargerId;
+  const { kioskId } = currentCharger;
   const toggleEdit = (e) => {
     e.preventDefault();
     setEditTrans((prevEditTrans) => !prevEditTrans);
   };
 
   const initialValues = {
-    'SERVER Set Transaction Amount': transAmount,
+    'SERVER Set Transaction Amount': transAmount / 100,
   };
   return (
     <>
@@ -86,10 +86,10 @@ const TransAmount = (props) => {
         })}
         onSubmit={async (values, formikHelpers) => {
           try {
-            values['SERVER Set Transaction Amount'] = parseInt(
-              values['SERVER Set Transaction Amount'],
-            );
-            let res = await axios.put(`/chargers/${chargerId}`, values);
+            let copy = { ...values };
+            copy['SERVER Set Transaction Amount'] *= 100;
+
+            let res = await axios.put(`/chargers/${kioskId}`, copy);
             setEditTrans((prevVal) => !prevVal);
             enqueueSnackbar('Successfully updated transaction amount.', {
               variant: 'success',
@@ -136,7 +136,6 @@ const TransAmount = (props) => {
                     name='SERVER Set Transaction Amount'
                     margin='dense'
                     size='small'
-                    number
                     className={classes.textField}
                     disabled={!editTrans}
                     helperText={
@@ -181,7 +180,14 @@ const TransAmount = (props) => {
                       </Grid>
                     </>
                   ) : (
-                    <Button color='primary' size='small' onClick={toggleEdit}>
+                    <Button
+                      disabled={
+                        Object.keys(currentCharger.charger).length === 0
+                      }
+                      color='primary'
+                      size='small'
+                      onClick={toggleEdit}
+                    >
                       Edit
                     </Button>
                   )}
