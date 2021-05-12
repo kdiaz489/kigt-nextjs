@@ -4,7 +4,7 @@ import SettingField from '@/components/common/SettingField';
 import { string, email } from 'yup';
 import axios from 'axios';
 import Grid from '@material-ui/core/Grid';
-import MyCard from '../common/MyCard';
+import MyCard from '@/components/common/MyCard';
 import { useAuth } from '../../context/auth';
 import { useNotification } from 'context/notification';
 
