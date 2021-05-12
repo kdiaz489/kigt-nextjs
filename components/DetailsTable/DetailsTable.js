@@ -9,8 +9,6 @@ import {
   Paper,
 } from '@material-ui/core';
 
-import { v4 as uuidv4 } from 'uuid';
-
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
@@ -32,7 +30,7 @@ const DetailsTable = ({ aggrData, filteredData, isLoading }) => {
         </TableHead>
         <TableBody>
           {filteredData.map((row) => (
-            <TableRow key={uuidv4()}>
+            <TableRow key={row.date}>
               <TableCell>{`${row['date']} ${row['time']}`}</TableCell>
               <TableCell component='th' scope='row'>
                 {+row['EVSE Max Current']}

@@ -1,3 +1,4 @@
+import IconButton from '@material-ui/core/IconButton';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
@@ -15,6 +16,10 @@ import CurrentGraph from './CurrentGraph';
 import TemperatureGraph from './TemperatureGraph';
 import PaymentGraph from './PaymentGraph';
 import Divider from '@material-ui/core/Divider';
+import { useRouter } from 'next/router';
+import { useFetchedCharger } from '../../../context/chargers';
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+import TroubleShootForm from '../TroubleShootForm';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -62,8 +67,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ChargerDetails = ({ currentCharger }) => {
+const ChargerDetails = (props) => {
   const classes = useStyles();
+  const router = useRouter();
+  const { id } = router.query;
+  const { charger } = useFetchedCharger(id);
+  const currentCharger = charger.charger ? charger.charger : charger;
 
   // enum for conditional rendering
   const CHARGER_STATES = {
@@ -219,23 +228,25 @@ const ChargerDetails = ({ currentCharger }) => {
 
   return (
     <>
-      <Typography variant='h5' gutterBottom>
-        Terminal ID: {currentCharger.kioskId}
-      </Typography>
       <Grid container spacing={3}>
+        <Grid container item>
+          <Grid item xs={6}>
+            <Typography variant='h5' gutterBottom component='span'>
+              ID: {id}
+            </Typography>
+          </Grid>
+          <Grid container item xs={6} justify='flex-end'>
+            <TroubleShootForm />
+          </Grid>
+        </Grid>
         <Grid item xs={12} md={4}>
           <Card className={classes.card} variant='outlined'>
-            <CardHeader
-              title='Health Status'
-              align='center'
-              variant='body1'
-              gutterBottom
-            />
+            <CardHeader title='Health Status' align='center' variant='body1' />
             <Divider />
             <CardContent>
               <div className={classes.cardContent}>
-                {currentCharger.charger['EVSE Status Code'] ? (
-                  CHARGER_STATES[currentCharger.charger['EVSE Status Code']]
+                {currentCharger['EVSE Status Code'] ? (
+                  CHARGER_STATES[currentCharger['EVSE Status Code']]
                 ) : (
                   <Box className={classes.status}>
                     <HelpIcon fontSize='large' className={classes.greyStatus} />
@@ -258,7 +269,7 @@ const ChargerDetails = ({ currentCharger }) => {
             <CardContent>
               <div className={classes.cardContent}>
                 <Typography align='center' variant='h5' gutterBottom>
-                  {currentCharger.charger['EVSE Payment State'] === true
+                  {currentCharger['EVSE Payment State'] === true
                     ? 'True'
                     : 'False'}
                 </Typography>
@@ -273,7 +284,9 @@ const ChargerDetails = ({ currentCharger }) => {
             <CardContent>
               <div className={classes.cardContent}>
                 <Typography align='center' variant='h5' gutterBottom>
-                  {currentCharger.charger['EVSE App Screen']}
+                  {currentCharger['EVSE App Screen']
+                    ? currentCharger['EVSE App Screen']
+                    : 'No data available.'}
                 </Typography>
               </div>
             </CardContent>

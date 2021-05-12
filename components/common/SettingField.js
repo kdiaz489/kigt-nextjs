@@ -5,14 +5,9 @@ import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import ThrottleSelect from '../../ThrottleSelect';
-import axios from 'axios';
 import { Formik, Field, Form } from 'formik';
-import { object, number, string, email } from 'yup';
-import { MenuItem } from '@material-ui/core';
-import { useNotification } from '../../../context/notification';
-import { parseCookies } from 'nookies';
-import { useAuth } from '../../../context/auth';
+import { object } from 'yup';
+import { useEffect } from 'react';
 
 const useStyles = makeStyles((theme) => ({
   disabledUnderline: {
@@ -25,42 +20,38 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SettingField = ({ name, initialValues, title, validationSchema }) => {
+const SettingField = ({
+  children,
+  name,
+  initialValues,
+  title,
+  validationSchema,
+  onSubmit,
+  disableEdit,
+  renderAs,
+  isSelect,
+}) => {
   const classes = useStyles();
   const [edit, setEdit] = useState(false);
-  const { user } = useAuth();
-  // const { token: clientToken } = parseCookies();
-  const { enqueueSnackbar, closeSnackbar } = useNotification();
 
-  const toggleEdit = (e) => {
-    e.preventDefault();
+  const toggleEdit = () => {
     setEdit((prevEditThrottle) => !prevEditThrottle);
   };
+
   const initialVals = initialValues;
+
+  const submitForm = async (values, formikHelpers) => {
+    await onSubmit(values, formikHelpers);
+    toggleEdit();
+  };
+
   return (
     <>
       <Formik
         initialValues={initialVals}
         validationSchema={object(validationSchema)}
-        onSubmit={async (values, formikHelpers) => {
-          try {
-            let res = await axios.put(`/auth/updateAccount`, values, {
-              headers: { authorization: `Bearer ${user.token}` },
-            });
-            setEdit((prevVal) => !prevVal);
-            enqueueSnackbar('Account successfully updated.', {
-              variant: 'success',
-            });
-          } catch (error) {
-            console.log(error);
-            enqueueSnackbar(
-              'Error trying to update your account. Please try again.',
-              {
-                variant: 'error',
-              }
-            );
-          }
-        }}>
+        enableReinitialize={true}
+        onSubmit={submitForm}>
         {({ values, errors, touched, isSubmitting, isValidating }) => (
           <Form>
             <Box border={1} p={1.5} borderColor='grey.400' borderRadius={9}>
@@ -71,7 +62,9 @@ const SettingField = ({ name, initialValues, title, validationSchema }) => {
                   xs={4}
                   alignItems='center'
                   justify='center'>
-                  <Typography variant='body1'>{title}</Typography>
+                  <Typography variant='body1' align='center'>
+                    {title}
+                  </Typography>
                 </Grid>
                 <Grid
                   container
@@ -80,21 +73,17 @@ const SettingField = ({ name, initialValues, title, validationSchema }) => {
                   alignItems='center'
                   justify='center'>
                   <Field
+                    as={renderAs ? renderAs : TextField}
                     name={name}
-                    as={TextField}
+                    select={isSelect}
+                    margin='dense'
+                    size='small'
                     fullWidth
                     disabled={!edit}
-                    InputProps={{
-                      classes: {
-                        disabled: classes.disabledUnderline,
-                        input: classes.textField,
-                      },
-                    }}
-                    helperText={
-                      touched[name] && Boolean(errors[name]) && errors[name]
-                    }
-                    error={touched[name] && Boolean(errors[name])}
-                  />
+                    helperText={Boolean(errors[name]) && errors[name]}
+                    error={Boolean(errors[name])}>
+                    {children}
+                  </Field>
                 </Grid>
                 <Grid
                   container
@@ -124,7 +113,11 @@ const SettingField = ({ name, initialValues, title, validationSchema }) => {
                       </Grid>
                     </>
                   ) : (
-                    <Button color='primary' size='small' onClick={toggleEdit}>
+                    <Button
+                      disabled={disableEdit || isSubmitting}
+                      color='primary'
+                      size='small'
+                      onClick={toggleEdit}>
                       Edit
                     </Button>
                   )}

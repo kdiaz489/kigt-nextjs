@@ -19,6 +19,7 @@ import { mutate } from 'swr';
 import { useNotification } from '../../../context/notification';
 import { object, string } from 'yup';
 import { makeStyles } from '@material-ui/core/styles';
+import { useAuth } from '../../../context/auth';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -34,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
 const AddChargerDialog = () => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const { user } = useAuth();
   let [multiCharger, setMultiCharger] = useState(false);
   const theme = useTheme();
   const { enqueueSnackbar, closeSnackbar } = useNotification();
@@ -64,10 +66,10 @@ const AddChargerDialog = () => {
   const handleSubmit = async (values, formikHelpers) => {
     try {
       let res = await axios.post('/chargers', values, {
-        headers: { authorization: `Bearer ${clientToken}` },
+        headers: { authorization: `Bearer ${user.token}` },
       });
       mutate(
-        ['/chargers', `Bearer ${clientToken} `],
+        ['/chargers', `Bearer ${user.token} `],
 
         false
       );
@@ -92,7 +94,7 @@ const AddChargerDialog = () => {
         startIcon={<AddIcon />}
         variant='contained'
         onClick={handleClickOpen}
-        color='secondary'
+        color='primary'
         className={classes.button}>
         Add Charger
       </Button>

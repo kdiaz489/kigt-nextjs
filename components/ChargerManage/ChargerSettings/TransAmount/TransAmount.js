@@ -1,16 +1,12 @@
-import { useState } from 'react';
-import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
-import { Formik, Field, Form } from 'formik';
-import { object, number } from 'yup';
+import { number } from 'yup';
 import NumberFormat from 'react-number-format';
+import { useRouter } from 'next/router';
 import { useNotification } from '../../../../context/notification';
-import { useChargers } from '../../../../context/chargers';
+import { useFetchedCharger } from '../../../../context/chargers';
+import SettingField from '../../../common/SettingField';
 
 const useStyles = makeStyles((theme) => ({
   disabledUnderline: {
@@ -22,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
   },
 }));
+
 const NumberFormatCustom = (props) => {
   const { inputRef, onChange, InputProps, ...other } = props;
 
@@ -61,142 +58,54 @@ const TextFieldCustom = (props) => {
 };
 
 const TransAmount = (props) => {
-  const classes = useStyles();
-  const [editTrans, setEditTrans] = useState(false);
-  const { enqueueSnackbar, closeSnackbar } = useNotification();
-  const { currentCharger } = useChargers();
-  const transAmount = currentCharger.charger['SERVER Set Transaction Amount'];
-  const { kioskId } = currentCharger;
-  const toggleEdit = (e) => {
-    e.preventDefault();
-    setEditTrans((prevEditTrans) => !prevEditTrans);
+  const router = useRouter();
+  const { id } = router.query;
+  const { charger } = useFetchedCharger(id);
+  const { enqueueSnackbar } = useNotification();
+  const currentCharger = charger.charger ? charger.charger : charger;
+  const transAmount = currentCharger['SERVER Set Transaction Amount'];
+  // const disableEdit = Object.keys(currentCharger).length === 0;
+  const disableEdit = charger.charger ? false : true;
+
+  let initialValues = {
+    'SERVER Set Transaction Amount': transAmount ? transAmount / 100 : 0,
   };
 
-  const initialValues = {
-    'SERVER Set Transaction Amount': transAmount / 100,
+  const onSubmit = async (values, formikHelpers) => {
+    try {
+      let copy = { ...values };
+      copy['SERVER Set Transaction Amount'] *= 100;
+
+      let res = await axios.put(`/chargers/updateCharger/${id}`, copy);
+      enqueueSnackbar('Successfully updated transaction amount.', {
+        variant: 'success',
+      });
+    } catch (error) {
+      enqueueSnackbar('Error updating transaction amount. Please try again.', {
+        variant: 'error',
+      });
+    }
   };
+
+  const validationSchema = {
+    'SERVER Set Transaction Amount': number('Must be a valid value').required(
+      'Required'
+    ),
+  };
+
   return (
     <>
-      <Formik
-        initialValues={initialValues}
-        validationSchema={object({
-          'SERVER Set Transaction Amount': number(
-            'Must be a valid value',
-          ).required('Required'),
-        })}
-        onSubmit={async (values, formikHelpers) => {
-          try {
-            let copy = { ...values };
-            copy['SERVER Set Transaction Amount'] *= 100;
-
-            let res = await axios.put(`/chargers/${kioskId}`, copy);
-            setEditTrans((prevVal) => !prevVal);
-            enqueueSnackbar('Successfully updated transaction amount.', {
-              variant: 'success',
-            });
-          } catch (error) {
-            enqueueSnackbar(
-              'Error updating transaction amount. Please try again.',
-              {
-                variant: 'error',
-              },
-            );
-          }
-        }}
-      >
-        {({ values, errors, touched, isSubmitting, isValidating }) => (
-          <Form>
-            <Box
-              border={1}
-              style={{ padding: '5px' }}
-              borderColor='grey.400'
-              borderRadius='borderRadius'
-            >
-              <Grid container spacing={2}>
-                <Grid
-                  container
-                  item
-                  xs={4}
-                  alignItems='center'
-                  justify='center'
-                >
-                  <Typography variant='body1' align='center'>
-                    Transaction Amount
-                  </Typography>
-                </Grid>
-                <Grid
-                  container
-                  item
-                  xs={4}
-                  alignItems='center'
-                  justify='center'
-                >
-                  <Field
-                    as={TextFieldCustom}
-                    name='SERVER Set Transaction Amount'
-                    margin='dense'
-                    size='small'
-                    className={classes.textField}
-                    disabled={!editTrans}
-                    helperText={
-                      touched['SERVER Set Transaction Amount'] &&
-                      Boolean(errors['SERVER Set Transaction Amount']) &&
-                      errors['SERVER Set Transaction Amount']
-                    }
-                    error={
-                      touched['SERVER Set Transaction Amount'] &&
-                      Boolean(errors['SERVER Set Transaction Amount'])
-                    }
-                  />
-                </Grid>
-                <Grid
-                  container
-                  item
-                  xs={4}
-                  className={classes.gridItemSize}
-                  alignItems='center'
-                  justify='center'
-                >
-                  {editTrans ? (
-                    <>
-                      <Grid item xs={6}>
-                        <Button
-                          type='submit'
-                          color='primary'
-                          size='small'
-                          disabled={isSubmitting}
-                        >
-                          Update
-                        </Button>
-                      </Grid>
-                      <Grid item xs={6}>
-                        <Button
-                          color='secondary'
-                          size='small'
-                          onClick={toggleEdit}
-                        >
-                          Cancel
-                        </Button>
-                      </Grid>
-                    </>
-                  ) : (
-                    <Button
-                      disabled={
-                        Object.keys(currentCharger.charger).length === 0
-                      }
-                      color='primary'
-                      size='small'
-                      onClick={toggleEdit}
-                    >
-                      Edit
-                    </Button>
-                  )}
-                </Grid>
-              </Grid>
-            </Box>
-          </Form>
-        )}
-      </Formik>
+      {
+        <SettingField
+          title='Transaction Amount'
+          initialValues={initialValues}
+          name='SERVER Set Transaction Amount'
+          validationSchema={validationSchema}
+          onSubmit={onSubmit}
+          disableEdit={disableEdit}
+          renderAs={TextFieldCustom}
+        />
+      }
     </>
   );
 };

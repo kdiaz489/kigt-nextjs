@@ -16,6 +16,9 @@ import { firebaseClient } from '../../firebaseClient';
 import { useAuth } from '../../context/auth';
 import { useNav } from '../../context/nav';
 import Logo from '../../public/img/KIGT_Logo.svg';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import { Button } from '@material-ui/core';
+
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -99,9 +102,10 @@ const Nav = (props) => {
   const classes = useStyles();
   const theme = useTheme();
   const pathname = router.pathname;
-  const { user } = useAuth();
+  const { user, signout } = useAuth();
   const [open, toggleOpen] = useNav();
   const { window } = props;
+  const { backButton } = props;
   const container =
     window !== undefined ? () => window().document.body : undefined;
 
@@ -166,8 +170,7 @@ const Nav = (props) => {
           <ListItem
             button
             onClick={async () => {
-              await firebaseClient.auth().signOut();
-              router.push('/', undefined, { shallow: true });
+              await signout();
             }}
             className={classes.listItem}>
             <ListItemText
@@ -196,6 +199,14 @@ const Nav = (props) => {
             className={classes.menuButton}>
             <MenuIcon />
           </IconButton>
+          {backButton && (
+            <Button
+              style={{ color: 'white' }}
+              startIcon={<ArrowBackIcon />}
+              onClick={() => router.back()}>
+              Back
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
       <nav className={classes.drawer}>

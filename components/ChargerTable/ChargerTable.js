@@ -9,6 +9,7 @@ import Paper from '@material-ui/core/Paper';
 import ChargerStatus from './ChargerStatus';
 import { useChargers } from '../../context/chargers';
 import { format } from 'date-fns';
+import { useRouter } from 'next/router';
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
@@ -17,10 +18,12 @@ const useStyles = makeStyles({
 
 const ChargerTable = ({ data }) => {
   const classes = useStyles();
+  const router = useRouter();
   const { currentCharger, setCurrentCharger } = useChargers();
 
   const handleRowClick = (e, rowData) => {
-    setCurrentCharger(rowData);
+    // setCurrentCharger(rowData);
+    router.push(`/dashboard/t/${rowData['kioskId']}`);
   };
   return (
     <TableContainer component={Paper}>

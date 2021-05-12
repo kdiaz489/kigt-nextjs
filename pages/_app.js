@@ -28,7 +28,7 @@ Router.events.on('routeChangeStart', () => {
   NProgress.start();
 });
 
-Router.events.on('routerChangeComplete', () => {
+Router.events.on('routeChangeComplete', () => {
   NProgress.done();
 });
 
@@ -98,7 +98,6 @@ export default class MyApp extends App {
             content='minimum-scale=1, initial-scale=1, width=device-width'
           />
         </Head>
-        {/* <Provider store={store}> */}
         <ThemeProvider theme={theme}>
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
           <CssBaseline />
@@ -130,7 +129,6 @@ export default class MyApp extends App {
             </Container>
           </SWRConfig>
         </ThemeProvider>
-        {/* </Provider> */}
       </React.Fragment>
     );
   }

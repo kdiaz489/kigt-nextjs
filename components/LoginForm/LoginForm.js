@@ -11,6 +11,7 @@ import { Formik, Field, Form } from 'formik';
 import { object, string } from 'yup';
 import { firebaseClient } from '../../firebaseClient';
 import { useNotification } from '../../context/notification';
+import { useAuth } from '../../context/auth';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -85,6 +86,7 @@ const LoginForm = (props) => {
   const classes = useStyles();
   const router = useRouter();
   const { enqueueSnackbar, closeSnackbar } = useNotification();
+  const { login } = useAuth();
 
   return (
     <>
@@ -100,18 +102,14 @@ const LoginForm = (props) => {
         onSubmit={async (values, formikHelpers) => {
           /* must return promise */
           try {
-            await firebaseClient
-              .auth()
-              .signInWithEmailAndPassword(values.email, values.password);
-            router.push('/dashboard');
+            await login(values.email, values.password);
           } catch (error) {
             enqueueSnackbar('Error logging in. Please try again.', {
               variant: 'error',
             });
             console.log('Error', error);
           }
-        }}
-      >
+        }}>
         {({ values, errors, touched, isSubmitting, isValidating }) => (
           <Form className={classes.form}>
             <Box mb={2}>
@@ -156,8 +154,7 @@ const LoginForm = (props) => {
               fullWidth
               variant='contained'
               className={classes.submit}
-              disabled={isSubmitting || isValidating}
-            >
+              disabled={isSubmitting || isValidating}>
               Sign In
             </Button>
           </Form>

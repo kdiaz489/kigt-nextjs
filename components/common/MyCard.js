@@ -7,8 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   card: {
-    height: '100%',
-    width: 'auto',
+    height: 'auto',
     borderRadius: '16px',
   },
 

@@ -1,10 +1,12 @@
 import { ResponsivePie } from '@nivo/pie';
 import Card from '@material-ui/core/Card';
-import { useChargers } from '../../../../context/chargers';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Typography from '@material-ui/core/Typography';
 import useSWR from 'swr';
 import MyCard from '../../../common/MyCard';
+import { useChargers } from '../../../../context/chargers';
 import { makeStyles } from '@material-ui/core';
+import { useRouter } from 'next/router';
 
 const useStyles = makeStyles((theme) => ({
   graph: {
@@ -14,15 +16,50 @@ const useStyles = makeStyles((theme) => ({
 }));
 const PaymentGraph = () => {
   const classes = useStyles();
+  const router = useRouter();
+  const { id } = router.query;
   const { currentCharger, setCurrentCharger } = useChargers();
-  const { data } = useSWR(
-    `/chargers/getPaymentState/${currentCharger.kioskId}`
-  );
+  const { data, error } = useSWR(`/chargers/getPaymentState/${id}`);
 
+  if (error) {
+    return (
+      <MyCard title='Current' type='graph' align='center'>
+        <div className={classes.graph}>
+          <div
+            style={{
+              height: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <Typography variant='h6'>No data available.</Typography>
+          </div>
+        </div>
+      </MyCard>
+    );
+  }
+
+  if (!data) {
+    return (
+      <MyCard title='Current' type='graph' align='center'>
+        <div className={classes.graph}>
+          <div
+            style={{
+              height: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <CircularProgress color='primary' size={70} />
+          </div>
+        </div>
+      </MyCard>
+    );
+  }
   return (
     <MyCard title='Payment Status' align='center'>
       <div className={classes.graph}>
-        {data ? (
+        {data.data.length ? (
           <ResponsivePie
             data={data.data}
             margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
@@ -47,7 +84,7 @@ const PaymentGraph = () => {
               alignItems: 'center',
               justifyContent: 'center',
             }}>
-            <CircularProgress color='primary' size={70} />
+            <Typography variant='h6'>No data available.</Typography>
           </div>
         )}
       </div>

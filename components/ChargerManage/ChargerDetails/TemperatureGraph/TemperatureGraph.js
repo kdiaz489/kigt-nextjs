@@ -1,10 +1,13 @@
-import { ResponsiveLine } from '@nivo/line';
 import Card from '@material-ui/core/Card';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { makeStyles } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 import { useChargers } from '../../../../context/chargers';
 import useSWR from 'swr';
+import { ResponsiveLine } from '@nivo/line';
 import MyCard from '../../../common/MyCard';
-import { makeStyles } from '@material-ui/core';
+
+import { useRouter } from 'next/router';
 
 const useStyles = makeStyles((theme) => ({
   graph: {
@@ -14,13 +17,52 @@ const useStyles = makeStyles((theme) => ({
 }));
 const TemperatureGraph = () => {
   const classes = useStyles();
-  const { currentCharger, setCurrentCharger } = useChargers();
-  const { data } = useSWR(`/chargers/getTemperature/${currentCharger.kioskId}`);
+  const router = useRouter();
+  const { id } = router.query;
+  const { data, error } = useSWR(`/chargers/getTemperature/${id}`);
+
+  if (error) {
+    return (
+      <MyCard title='Current' type='graph' align='center'>
+        <div className={classes.graph}>
+          <div
+            style={{
+              height: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <Typography variant='h6'>No data available.</Typography>
+          </div>
+        </div>
+      </MyCard>
+    );
+    // this returns nothing
+    return null;
+  }
+
+  if (!data) {
+    return (
+      <MyCard title='Current' type='graph' align='center'>
+        <div className={classes.graph}>
+          <div
+            style={{
+              height: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <CircularProgress color='primary' size={70} />
+          </div>
+        </div>
+      </MyCard>
+    );
+  }
 
   return (
     <MyCard title='Temperature' align='center'>
       <div className={classes.graph}>
-        {data ? (
+        {data.data.length > 0 ? (
           <ResponsiveLine
             data={data.data}
             margin={{ top: 50, right: 50, bottom: 50, left: 60 }}
@@ -71,7 +113,7 @@ const TemperatureGraph = () => {
               alignItems: 'center',
               justifyContent: 'center',
             }}>
-            <CircularProgress color='primary' size={70} />
+            <Typography variant='h6'>No data available.</Typography>
           </div>
         )}
       </div>
