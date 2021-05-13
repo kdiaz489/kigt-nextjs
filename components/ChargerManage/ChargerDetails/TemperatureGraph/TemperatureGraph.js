@@ -22,28 +22,27 @@ const TemperatureGraph = () => {
   const { data, error } = useSWR(`/chargers/getTemperature/${id}`);
 
   if (error) {
-    return (
-      <MyCard title='Current' type='graph' align='center'>
-        <div className={classes.graph}>
-          <div
-            style={{
-              height: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <Typography variant='h6'>No data available.</Typography>
-          </div>
-        </div>
-      </MyCard>
-    );
-    // this returns nothing
+    // return (
+    //   <MyCard title='Temperature' type='graph' align='center'>
+    //     <div className={classes.graph}>
+    //       <div
+    //         style={{
+    //           height: '100%',
+    //           display: 'flex',
+    //           alignItems: 'center',
+    //           justifyContent: 'center',
+    //         }}>
+    //         <Typography variant='h6'>No data available.</Typography>
+    //       </div>
+    //     </div>
+    //   </MyCard>
+    // );
     return null;
   }
 
   if (!data) {
     return (
-      <MyCard title='Current' type='graph' align='center'>
+      <MyCard title='Temperature' type='graph' align='center'>
         <div className={classes.graph}>
           <div
             style={{

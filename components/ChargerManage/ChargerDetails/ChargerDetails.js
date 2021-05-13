@@ -19,7 +19,7 @@ import Divider from '@material-ui/core/Divider';
 import { useRouter } from 'next/router';
 import { useFetchedCharger } from '../../../context/chargers';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
-import TroubleShootForm from '../TroubleShootForm';
+import TroubleShootDialog from '../TroubleShootDialog';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -236,7 +236,7 @@ const ChargerDetails = (props) => {
             </Typography>
           </Grid>
           <Grid container item xs={6} justify='flex-end'>
-            <TroubleShootForm />
+            <TroubleShootDialog />
           </Grid>
         </Grid>
         <Grid item xs={12} md={4}>

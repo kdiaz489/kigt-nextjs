@@ -33,7 +33,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const TroubleShootForm = (props) => {
+const TroubleShootDialog = (props) => {
   const classes = useStyles();
   const router = useRouter();
   const { id } = router.query;
@@ -164,4 +164,4 @@ const TroubleShootForm = (props) => {
   );
 };
 
-export default TroubleShootForm;
+export default TroubleShootDialog;

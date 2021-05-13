@@ -23,7 +23,7 @@ const PaymentGraph = () => {
 
   if (error) {
     return (
-      <MyCard title='Current' type='graph' align='center'>
+      <MyCard title='Payment Status' type='graph' align='center'>
         <div className={classes.graph}>
           <div
             style={{
@@ -41,7 +41,7 @@ const PaymentGraph = () => {
 
   if (!data) {
     return (
-      <MyCard title='Current' type='graph' align='center'>
+      <MyCard title='Payment Status' type='graph' align='center'>
         <div className={classes.graph}>
           <div
             style={{
