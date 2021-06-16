@@ -13,6 +13,7 @@ export function AuthProvider({ children }) {
   const handleUser = async (rawUser) => {
     if (rawUser) {
       // take user data and format it
+
       const user = await formatUser(rawUser);
       const { token, ...userWithoutToken } = user;
 
@@ -68,7 +69,17 @@ export function AuthProvider({ children }) {
       console.log('Updating Token');
 
       // const token = await user.getIdToken();
-      let formattedUser = formatUser(firebaseUser);
+      let ref = firebaseClient
+        .firestore()
+        .collection('users')
+        .doc(firebaseUser.uid);
+      let doc = await ref.get();
+
+      let formattedUser = formatUser({
+        ...firebaseUser,
+        apiKey: doc.data().apiKey,
+      });
+      console.log(formattedUser);
       setUser(formattedUser);
       // nookies.destroy(null, 'token');
       // nookies.set(null, 'token', token, {});
@@ -98,6 +109,7 @@ const formatUser = (user) => {
     token: user.ya,
     displayName: user.displayName,
     photoUrl: user.photoURL,
+    apiKey: user.apiKey,
   };
 };
 
