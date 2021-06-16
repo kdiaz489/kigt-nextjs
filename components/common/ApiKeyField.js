@@ -21,21 +21,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ApiKeyField = ({ children, name, title, onSubmit, currApiKey }) => {
+const ApiKeyField = ({ children, name, title, onSubmit, initialValues }) => {
   const classes = useStyles();
-  const [edit, setEdit] = useState(false);
-  let apiKey = currApiKey;
-  const toggleEdit = () => {
-    setEdit((prevEditThrottle) => !prevEditThrottle);
-  };
-
-  const submitForm = async (values, formikHelpers) => {
-    let res = await onSubmit();
-
-    apiKey = res.data.apiKey;
-  };
-
-  useEffect(() => {}, [apiKey]);
 
   return (
     <>
@@ -47,7 +34,7 @@ const ApiKeyField = ({ children, name, title, onSubmit, currApiKey }) => {
             </Typography>
           </Grid>
           <Grid container item xs={4} alignItems='center' justify='center'>
-            {apiKey}
+            {initialValues.apiKey}
           </Grid>
           <Grid
             container
@@ -56,7 +43,7 @@ const ApiKeyField = ({ children, name, title, onSubmit, currApiKey }) => {
             className={classes.gridItemSize}
             alignItems='center'
             justify='center'>
-            <Button color='primary' size='small' onClick={submitForm}>
+            <Button color='primary' size='small' onClick={onSubmit}>
               Issue API Key
             </Button>
           </Grid>
