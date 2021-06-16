@@ -7,13 +7,8 @@ import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 import ChargerDetails from '../../components/ChargerManage/ChargerDetails';
 import ChargerSettings from '../../components/ChargerManage/ChargerSettings';
-import TroubleShootForm from '../../components/ChargerManage/TroubleShootForm';
-import useSWR from 'swr';
-import { useRouter } from 'next/router';
-import { parseCookies } from 'nookies';
-import { useAuth } from '../../context/auth';
 import NavWrapper from '../../components/NavWrapper';
-import { useFetchedCharger } from '../../context/chargers';
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 

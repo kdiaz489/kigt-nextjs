@@ -20,6 +20,7 @@ import { useRouter } from 'next/router';
 import { useFetchedCharger } from '../../../context/chargers';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import TroubleShootDialog from '../TroubleShootDialog';
+import TroubleShootForm from '@/components/TroubleShootForm/TroubleShootForm';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -303,6 +304,10 @@ const ChargerDetails = (props) => {
         {/* Start of Payment Status Graph */}
         <Grid item xs={12}>
           <PaymentGraph />
+        </Grid>
+        {/* Start of Payment Status Graph */}
+        <Grid item xs={12}>
+          <TroubleShootForm />
         </Grid>
       </Grid>
     </>

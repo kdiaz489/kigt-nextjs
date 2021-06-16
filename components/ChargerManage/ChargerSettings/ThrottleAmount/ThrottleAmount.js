@@ -49,7 +49,6 @@ const ThrottleAmount = (props) => {
   const initialValues = {
     'SERVER Set Current Max': throttleAmount,
   };
-  console.log(initialValues);
 
   const validationSchema = {
     'SERVER Set Current Max': number('Must be a valid value')

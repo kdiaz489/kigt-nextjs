@@ -22,21 +22,22 @@ const PaymentGraph = () => {
   const { data, error } = useSWR(`/chargers/getPaymentState/${id}`);
 
   if (error) {
-    return (
-      <MyCard title='Payment Status' type='graph' align='center'>
-        <div className={classes.graph}>
-          <div
-            style={{
-              height: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <Typography variant='h6'>No data available.</Typography>
-          </div>
-        </div>
-      </MyCard>
-    );
+    // return (
+    //   <MyCard title='Payment Status' type='graph' align='center'>
+    //     <div className={classes.graph}>
+    //       <div
+    //         style={{
+    //           height: '100%',
+    //           display: 'flex',
+    //           alignItems: 'center',
+    //           justifyContent: 'center',
+    //         }}>
+    //         <Typography variant='h6'>No data available.</Typography>
+    //       </div>
+    //     </div>
+    //   </MyCard>
+    // );
+    return null;
   }
 
   if (!data) {

@@ -12,7 +12,7 @@ import { Formik, Field, Form } from 'formik';
 import { object, string } from 'yup';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import { useAuth } from '../../../context/auth';
+import { useAuth } from '../../context/auth';
 import MyCard from '@/components/common/MyCard';
 
 const useStyles = makeStyles(() => ({
@@ -70,7 +70,7 @@ const TroubleShootForm = (props) => {
 
   return (
     <>
-      <MyCard title='Need Help?' align='left'>
+      <MyCard title='Need Help?' align='center'>
         <Formik
           validationSchema={object(validationSchema)}
           initialValues={initialValues}
