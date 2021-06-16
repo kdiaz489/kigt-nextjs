@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -7,7 +7,8 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { Formik, Field, Form } from 'formik';
 import { object } from 'yup';
-import { useEffect } from 'react';
+import { firebaseClient } from 'firebaseClient';
+import { useAuth } from '../../context/auth';
 
 const useStyles = makeStyles((theme) => ({
   disabledUnderline: {
@@ -20,28 +21,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ApiKeyField = ({
-  children,
-  name,
-
-  title,
-
-  onSubmit,
-  disableEdit,
-  renderAs,
-  isSelect,
-}) => {
+const ApiKeyField = ({ children, name, title, onSubmit, currApiKey }) => {
   const classes = useStyles();
   const [edit, setEdit] = useState(false);
-
+  let apiKey = currApiKey;
   const toggleEdit = () => {
     setEdit((prevEditThrottle) => !prevEditThrottle);
   };
 
   const submitForm = async (values, formikHelpers) => {
-    await onSubmit(values, formikHelpers);
-    toggleEdit();
+    let res = await onSubmit();
+
+    apiKey = res.data.apiKey;
   };
+
+  useEffect(() => {}, [apiKey]);
 
   return (
     <>
@@ -52,12 +46,9 @@ const ApiKeyField = ({
               {title}
             </Typography>
           </Grid>
-          <Grid
-            container
-            item
-            xs={4}
-            alignItems='center'
-            justify='center'></Grid>
+          <Grid container item xs={4} alignItems='center' justify='center'>
+            {apiKey}
+          </Grid>
           <Grid
             container
             item
@@ -65,24 +56,9 @@ const ApiKeyField = ({
             className={classes.gridItemSize}
             alignItems='center'
             justify='center'>
-            {edit ? (
-              <>
-                <Grid item xs={6}>
-                  <Button type='submit' color='primary' size='small'>
-                    Update
-                  </Button>
-                </Grid>
-                <Grid item xs={6}>
-                  <Button color='secondary' size='small' onClick={toggleEdit}>
-                    Cancel
-                  </Button>
-                </Grid>
-              </>
-            ) : (
-              <Button color='primary' size='small' onClick={onSubmit}>
-                Issue API Key
-              </Button>
-            )}
+            <Button color='primary' size='small' onClick={submitForm}>
+              Issue API Key
+            </Button>
           </Grid>
         </Grid>
       </Box>

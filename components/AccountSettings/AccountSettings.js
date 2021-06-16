@@ -8,6 +8,7 @@ import MyCard from '@/components/common/MyCard';
 import { useAuth } from '../../context/auth';
 import { useNotification } from 'context/notification';
 import ApiKeyField from '@/components/common/ApiKeyField';
+import { firebaseClient } from 'firebaseClient';
 
 const useStyles = makeStyles(() => ({
   paper: {
@@ -46,6 +47,7 @@ const AccountSettings = () => {
   const { enqueueSnackbar, closeSnackbar } = useNotification();
   const disableEditEmail = user ? false : true;
   const disableEditName = user ? false : true;
+  let key = user ? user.apiKey : 'No key issued';
 
   const onSubmit = async (values, formikHelpers) => {
     try {
@@ -80,6 +82,7 @@ const AccountSettings = () => {
       enqueueSnackbar('API Key successfully generated.', {
         variant: 'success',
       });
+      return res;
     } catch (error) {
       console.log(error);
       enqueueSnackbar(
@@ -88,6 +91,7 @@ const AccountSettings = () => {
           variant: 'error',
         }
       );
+      return;
     }
   };
   return (
@@ -134,6 +138,7 @@ const AccountSettings = () => {
               onSubmit={genApiKey}
               disableEdit={disableEditEmail}
               renderAs={TextFieldCustom}
+              currApiKey={key}
             />
           </Grid>
         </Grid>
