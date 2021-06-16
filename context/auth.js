@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import nookies from 'nookies';
+
 import { firebaseClient } from '../firebaseClient';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
@@ -50,6 +50,10 @@ export function AuthProvider({ children }) {
     Cookies.remove('auth');
     return res;
   };
+  const updateApiKey = async (oldUser, apiKey) => {
+    setUser({ ...oldUser, apiKey });
+    console.log(user);
+  };
 
   useEffect(() => {
     // if (typeof window !== undefined) {
@@ -77,9 +81,9 @@ export function AuthProvider({ children }) {
 
       let formattedUser = formatUser({
         ...firebaseUser,
-        apiKey: doc.data().apiKey,
+        apiKey: doc.data().apiKey ? doc.data().apiKey : '',
       });
-      console.log(formattedUser);
+
       setUser(formattedUser);
       // nookies.destroy(null, 'token');
       // nookies.set(null, 'token', token, {});
@@ -95,7 +99,8 @@ export function AuthProvider({ children }) {
     return () => clearInterval(handle);
   }, []);
   return (
-    <AuthContext.Provider value={{ user, register, login, signout }}>
+    <AuthContext.Provider
+      value={{ user, register, login, signout, updateApiKey }}>
       {children}
     </AuthContext.Provider>
   );

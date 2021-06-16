@@ -9,6 +9,7 @@ import { useAuth } from '../../context/auth';
 import { useNotification } from 'context/notification';
 import ApiKeyField from '@/components/common/ApiKeyField';
 import { firebaseClient } from 'firebaseClient';
+import { useEffect } from 'react';
 
 const useStyles = makeStyles(() => ({
   paper: {
@@ -43,12 +44,12 @@ const TextFieldCustom = (props) => {
 
 const AccountSettings = () => {
   const classes = useStyles();
-  const { user } = useAuth();
+  const { user, updateApiKey } = useAuth();
   const { enqueueSnackbar, closeSnackbar } = useNotification();
   const disableEditEmail = user ? false : true;
   const disableEditName = user ? false : true;
-  let key = user ? user.apiKey : 'No key issued';
 
+  let apiKeyInitialValues = { apiKey: user?.apiKey ?? '' };
   const onSubmit = async (values, formikHelpers) => {
     try {
       let res = await axios.put(`/auth/updateAccount`, values, {
@@ -78,7 +79,7 @@ const AccountSettings = () => {
           headers: { authorization: `Bearer ${user.token}` },
         }
       );
-
+      updateApiKey(user, res.data.key);
       enqueueSnackbar('API Key successfully generated.', {
         variant: 'success',
       });
@@ -94,6 +95,7 @@ const AccountSettings = () => {
       return;
     }
   };
+
   return (
     <>
       <MyCard title='Account Settings' align='center'>
@@ -138,7 +140,7 @@ const AccountSettings = () => {
               onSubmit={genApiKey}
               disableEdit={disableEditEmail}
               renderAs={TextFieldCustom}
-              currApiKey={key}
+              initialValues={apiKeyInitialValues}
             />
           </Grid>
         </Grid>
