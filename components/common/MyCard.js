@@ -7,8 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   card: {
-    height: '100%',
-    width: 'auto',
+    height: 'auto',
     borderRadius: '16px',
   },
 
@@ -20,10 +19,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const MyCard = ({ title, children, type, align }) => {
+const MyCard = ({ title, children, type, align, ...rest }) => {
   const classes = useStyles();
   return (
-    <Card className={classes.card} variant='outlined'>
+    <Card className={classes.card} variant='outlined' {...rest}>
       <CardHeader title={title} align={align} variant='h6' />
       <Divider />
       <CardContent>{children}</CardContent>

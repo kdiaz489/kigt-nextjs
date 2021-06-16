@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     color: 'white',
   },
   image: {
-    backgroundImage: `url('img/Home_Garage.jpg')`,
+    backgroundImage: `url('img/Charger_Wood.png')`,
     backgroundRepeat: 'no-repeat',
     backgroundColor:
       theme.palette.type === 'light'

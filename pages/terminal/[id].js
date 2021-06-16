@@ -5,8 +5,9 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
-import ChargerDetails from './ChargerDetails';
-import ChargerSettings from './ChargerSettings';
+import ChargerDetails from '../../components/ChargerManage/ChargerDetails';
+import ChargerSettings from '../../components/ChargerManage/ChargerSettings';
+import NavWrapper from '../../components/NavWrapper';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -53,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ChargerManage(props) {
+export default function ChargerManage2(props) {
   const classes = useStyles();
   const [value, setValue] = useState(0);
 
@@ -62,34 +63,37 @@ export default function ChargerManage(props) {
   };
 
   return (
-    <Paper className={classes.paper} elevation={0}>
-      <Tabs
-        classes={{
-          root: classes.tabBackground,
-        }}
-        centered
-        textColor='primary'
-        value={value}
-        onChange={handleChange}
-        aria-label='charger tabs'>
-        <Tab
-          label='Details'
-          classes={{ root: classes.font }}
-          {...a11yProps(0)}
-        />
-        <Tab
-          label='Settings'
-          classes={{ root: classes.font }}
-          {...a11yProps(1)}
-        />
-      </Tabs>
+    <NavWrapper>
+      <Paper className={classes.paper} elevation={0}>
+        <Tabs
+          classes={{
+            root: classes.tabBackground,
+          }}
+          centered
+          textColor='primary'
+          value={value}
+          onChange={handleChange}
+          aria-label='charger tabs'>
+          <Tab
+            label='Details'
+            classes={{ root: classes.font }}
+            {...a11yProps(0)}
+          />
+          <Tab
+            label='Settings'
+            classes={{ root: classes.font }}
+            {...a11yProps(1)}
+          />
+        </Tabs>
 
-      <TabPanel value={value} index={0}>
-        <ChargerDetails />
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        <ChargerSettings />
-      </TabPanel>
-    </Paper>
+        <TabPanel value={value} index={0}>
+          <ChargerDetails />
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <ChargerSettings />
+        </TabPanel>
+      </Paper>
+      <Box p={3}>{/* <TroubleShootForm currentCharger={data} /> */}</Box>
+    </NavWrapper>
   );
 }

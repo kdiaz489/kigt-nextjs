@@ -1,19 +1,17 @@
 import NavWrapper from '../components/NavWrapper';
-import { parseCookies } from 'nookies';
 import ChargerTable from '../components/ChargerTable';
 import useSWR from 'swr';
-import ChargerManage from '../components/ChargerManage';
 import AddCharger from '../components/AddCharger';
 import ChargerTableSkeleton from '../components/ChargerTableSkeleton';
 import DashboardHeader from '../components/DashboardHeader';
-import { useChargers } from '../context/chargers';
+import { useAuth } from '../context/auth';
 
 const Dashboard = () => {
-  let { token: authToken } = parseCookies();
-  const { data } = useSWR(['/chargers', `Bearer ${authToken} `]);
+  const { user } = useAuth();
+  const { data } = useSWR(user ? ['/chargers', `Bearer ${user.token} `] : null);
 
-  const { currentCharger } = useChargers();
-
+  console.log('Data');
+  console.log(data);
   // If data is undefined
   if (!data) {
     return <ChargerTableSkeleton />;
@@ -24,12 +22,7 @@ const Dashboard = () => {
     return (
       <>
         <DashboardHeader />
-
-        {currentCharger ? (
-          <ChargerManage />
-        ) : (
-          <ChargerTable data={data.chargers} />
-        )}
+        <ChargerTable data={data.chargers} />
       </>
     );
   }

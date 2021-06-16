@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const NavWrapper = ({ children }) => {
+const NavWrapper = (props) => {
   const classes = useStyles();
   return (
     <>
@@ -26,7 +26,7 @@ const NavWrapper = ({ children }) => {
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              if (!document.cookie.includes('token')) {
+              if (!document.cookie.includes('auth')) {
                 window.location.href = "/"
               }
             `,
@@ -34,11 +34,11 @@ const NavWrapper = ({ children }) => {
         />
       </Head>
       <div className={classes.root}>
-        <Nav />
+        <Nav {...props} />
 
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          {children}
+          {props.children}
         </main>
       </div>
     </>
