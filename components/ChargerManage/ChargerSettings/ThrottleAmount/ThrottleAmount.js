@@ -57,7 +57,10 @@ const ThrottleAmount = (props) => {
   };
   const onSubmit = async (values, formikHelpers) => {
     try {
-      let res = await axios.put(`/chargers/updateCharger/${id}`, values);
+      let res = await axios.put(
+        `/dashboard/chargers/updateCharger/${id}`,
+        values
+      );
       enqueueSnackbar('Successfully throttled charger.', {
         variant: 'success',
       });

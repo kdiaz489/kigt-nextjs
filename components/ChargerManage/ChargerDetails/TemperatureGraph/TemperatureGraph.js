@@ -19,7 +19,7 @@ const TemperatureGraph = () => {
   const classes = useStyles();
   const router = useRouter();
   const { id } = router.query;
-  const { data, error } = useSWR(`/chargers/getTemperature/${id}`);
+  const { data, error } = useSWR(`/dashboard/chargers/getTemperature/${id}`);
 
   if (error) {
     // return (

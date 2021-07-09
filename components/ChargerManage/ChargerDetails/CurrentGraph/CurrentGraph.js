@@ -17,7 +17,7 @@ const CurrentGraph = (props) => {
   const router = useRouter();
   const { id } = router.query;
 
-  const { data, error } = useSWR(`/chargers/getCurrent/${id}`);
+  const { data, error } = useSWR(`/dashboard/chargers/getCurrent/${id}`);
 
   console.log(data);
 

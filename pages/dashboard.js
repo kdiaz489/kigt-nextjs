@@ -8,7 +8,9 @@ import { useAuth } from '../context/auth';
 
 const Dashboard = () => {
   const { user } = useAuth();
-  const { data } = useSWR(user ? ['/chargers', `Bearer ${user.token} `] : null);
+  const { data } = useSWR(
+    user ? ['/dashboard/chargers', `Bearer ${user.token} `] : null
+  );
 
   console.log('Data');
   console.log(data);

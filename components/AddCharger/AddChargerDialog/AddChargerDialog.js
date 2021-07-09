@@ -65,11 +65,11 @@ const AddChargerDialog = () => {
 
   const handleSubmit = async (values, formikHelpers) => {
     try {
-      let res = await axios.post('/chargers', values, {
+      let res = await axios.post('/dashboard/chargers', values, {
         headers: { authorization: `Bearer ${user.token}` },
       });
       mutate(
-        ['/chargers', `Bearer ${user.token} `],
+        ['/dashboard/chargers', `Bearer ${user.token} `],
 
         false
       );

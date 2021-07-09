@@ -18,7 +18,10 @@ const TemperatureToggle = () => {
   const handleChange = async (event) => {
     try {
       let copy = { 'SERVER Get Temperature Reading?': !toggle };
-      let res = await axios.put(`/chargers/updateCharger/${id}`, copy);
+      let res = await axios.put(
+        `/dashboard/chargers/updateCharger/${id}`,
+        copy
+      );
       setToggle((prev) => !prev);
     } catch (error) {
       enqueueSnackbar('Error enabling temperature data. Please try again.', {

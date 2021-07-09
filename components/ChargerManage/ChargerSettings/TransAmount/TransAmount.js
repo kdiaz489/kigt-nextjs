@@ -76,7 +76,10 @@ const TransAmount = (props) => {
       let copy = { ...values };
       copy['SERVER Set Transaction Amount'] *= 100;
 
-      let res = await axios.put(`/chargers/updateCharger/${id}`, copy);
+      let res = await axios.put(
+        `/dashboard/chargers/updateCharger/${id}`,
+        copy
+      );
       enqueueSnackbar('Successfully updated transaction amount.', {
         variant: 'success',
       });
