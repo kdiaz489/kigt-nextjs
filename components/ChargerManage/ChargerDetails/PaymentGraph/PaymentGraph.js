@@ -19,7 +19,7 @@ const PaymentGraph = () => {
   const router = useRouter();
   const { id } = router.query;
   const { currentCharger, setCurrentCharger } = useChargers();
-  const { data, error } = useSWR(`/chargers/getPaymentState/${id}`);
+  const { data, error } = useSWR(`/dashboard/chargers/getPaymentState/${id}`);
 
   if (error) {
     // return (

@@ -118,7 +118,7 @@ const styles = {
   fontSize: '14px',
 };
 const CurrentGraph = () => {
-  const { data } = useSWR(`/chargers/getCurrent/113882052`);
+  const { data } = useSWR(`/dashboard/chargers/getCurrent/113882052`);
 
   return (
     <Paper elevation={3}>
